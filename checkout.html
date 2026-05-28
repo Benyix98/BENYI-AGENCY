@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasarela de Pago Segura | BENIA AGENCY</title>
+    <meta name="description" content="Completa tu pago de forma segura y agenda tu primera sesión estratégica de automatización con Inteligencia Artificial.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Calendly Widget CSS -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+</head>
+
+<body class="dark-mode ready-to-scroll" style="overflow-y: auto;">
+    <div id="particles-container"></div>
+    <div id="global-mouse-glow"></div>
+
+    <!-- Header minimalista de checkout -->
+    <nav class="navbar scrolled" id="navbar" style="position: sticky; top: 1.5rem; margin-bottom: 2rem;">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="images/logo.png" alt="BENIA Logo" class="nav-logo" style="height: 38px;">
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">
+                    <span class="btn-arrow-wrapper" style="transform: rotate(180deg); display: inline-flex; margin-right: 0.5rem; width: 18px; height: 18px; background: rgba(255,255,255,0.1);">
+                        <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 10px; height: 10px;">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Volver a Inicio
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" style="padding-bottom: 5rem; min-height: calc(100vh - 120px);">
+        <!-- Botón Volver Atrás con Flecha -->
+        <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: flex-start; z-index: 10; position: relative;">
+            <a href="index.html" onclick="if(window.history.length > 1) { event.preventDefault(); window.history.back(); }" class="nav-link" style="display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; text-decoration: none; color: var(--text-secondary); font-weight: 600; padding: 0.5rem 1.1rem; border-radius: 100px; border: 1px solid var(--border-glass); background: rgba(255, 255, 255, 0.01); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); user-select: none;">
+                <span class="btn-arrow-wrapper" style="transform: rotate(180deg); display: inline-flex; width: 22px; height: 22px; background: rgba(255,255,255,0.06); align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s ease;">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 11px; height: 11px; color: currentColor;">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span>Volver Atrás</span>
+            </a>
+        </div>
+
+        <!-- Estado de Pasos -->
+        <div class="checkout-steps">
+            <div class="step active" id="step-1-indicator">
+                <div class="step-num">1</div>
+                <div class="step-label">Pago Seguro</div>
+            </div>
+            <div class="step-connector" id="step-connector"></div>
+            <div class="step" id="step-2-indicator">
+                <div class="step-num">2</div>
+                <div class="step-label">Agendar Sesión</div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 1: Formulario de Pago (Visible al inicio) -->
+        <div class="checkout-grid" id="checkout-payment-section">
+            <!-- Columna Izquierda: Detalle de Compra -->
+            <div class="checkout-summary-col">
+                <div class="bento-shell">
+                    <div class="bento-core" style="padding: 2rem; justify-content: flex-start; gap: 1.5rem;">
+                        <h2 class="bento-title" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Tu Pedido</h2>
+                        
+                        <!-- Dropdown de Selección de Servicio (Oculto, sincronizado visualmente con las tarjetas) -->
+                        <select id="service-selector" style="display: none;">
+                            <option value="automatizacion" data-price="350" data-name="Automatizaciones de IA">Automatizaciones de IA — 350€</option>
+                            <option value="landings" data-price="200" data-name="Landings Inteligentes">Landings Inteligentes — 200€</option>
+                            <option value="soluciones-premium" data-price="100" data-name="Solución de Problemas">Solución de Problemas — 100€</option>
+                            <option value="mentorias-1h" data-price="65" data-name="Mentoría Especializada (1 Hora)">Mentoría Especializada (1 Hora) — 65€</option>
+                            <option value="mentorias-2h" data-price="125" data-name="Mentoría Especializada (2 Horas)">Mentoría Especializada (2 Horas) — 125€</option>
+                            <option value="mentorias-3h" data-price="170" data-name="Mentoría Especializada (3 Horas)">Mentoría Especializada (3 Horas) — 170€</option>
+                        </select>
+
+                        <!-- Detalle Estático del Servicio Seleccionado -->
+                        <div id="static-service-card" class="glass-card" style="width: 100%; padding: 1.5rem; border-radius: 20px; border: 1px solid rgba(var(--primary-rgb), 0.15); background: rgba(var(--primary-rgb), 0.02); display: flex; flex-direction: column; gap: 0.75rem; position: relative; overflow: hidden; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05); margin-top: 0.5rem;">
+                            <!-- Glow decorativo superior -->
+                            <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(20, 241, 149, 0.1); filter: blur(40px); border-radius: 50%;"></div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; position: relative; z-index: 2;">
+                                <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                                    <span class="bento-badge" style="background: rgba(20, 241, 149, 0.08); border-color: rgba(20, 241, 149, 0.25); color: var(--primary-500); margin-bottom: 0; padding: 0.25rem 0.65rem; font-size: 0.65rem; font-family: 'JetBrains Mono', monospace;">Servicio Seleccionado</span>
+                                    <h3 id="static-service-title" style="font-size: 1.35rem; font-weight: 800; color: white; margin-top: 0.5rem; font-family: 'Plus Jakarta Sans', sans-serif;">Automatizaciones de IA</h3>
+                                    <p id="static-service-subtitle" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin-top: 0.25rem; font-family: 'Plus Jakarta Sans', sans-serif;">Cargando detalles...</p>
+                                </div>
+                                <div style="text-align: right; display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-end;">
+                                    <span id="static-service-price" style="font-size: 1.6rem; font-weight: 800; color: var(--primary-500); text-shadow: 0 0 12px rgba(20, 241, 149, 0.35); font-family: 'Plus Jakarta Sans', sans-serif;">350 €</span>
+                                    <span id="static-service-period" style="font-size: 0.75rem; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; white-space: nowrap;">+ 30€/mes mant.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resumen Detallado -->
+                        <div class="order-summary-details" style="width: 100%; border-top: 1px solid var(--border-glass); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="summary-row">
+                                <span class="summary-label">Concepto</span>
+                                <span class="summary-value text-primary" id="selected-service-name" style="font-weight: 600;">Automatizaciones de IA</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Subtotal Pago Único</span>
+                                <span class="summary-value" id="subtotal-amount">350,00 €</span>
+                            </div>
+                            <div class="summary-row" id="maintenance-row" style="display: flex;">
+                                <span class="summary-label">Mantenimiento</span>
+                                <span class="summary-value text-primary" id="maintenance-amount" style="font-weight: 500;">+ 30,00 €/mes</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Impuestos (IVA / Tasas)</span>
+                                <span class="summary-value" style="color: var(--primary-500); font-weight: 500;">0,00 € (Incluidos)</span>
+                            </div>
+                            
+                            <!-- Opción de Contratar Mantenimiento (Bump Offer interactivo) -->
+                            <div id="maintenance-optin-container" class="glass-card" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.1rem; border-radius: 12px; border: 1px solid rgba(20, 241, 149, 0.3); background: rgba(20, 241, 149, 0.03); margin: 0.5rem 0; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); user-select: none;">
+                                <input type="checkbox" id="maintenance-checkbox" checked style="width: 18px; height: 18px; accent-color: var(--primary-500); cursor: pointer;">
+                                <label for="maintenance-checkbox" style="font-size: 0.8rem; color: white; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; gap: 0.15rem; width: 100%; text-align: left;">
+                                    <span id="maintenance-optin-title">Contratar Mantenimiento de la IA</span>
+                                    <span id="maintenance-optin-desc" style="font-size: 0.7rem; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace;">+ 30,00 € al mes</span>
+                                </label>
+                            </div>
+
+                            <div class="summary-row total-row" style="border-top: 1px dashed var(--border-glass); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                                <span class="summary-label-total" style="font-size: 1.2rem; font-weight: 700; color: white;">Total Pago Inicial</span>
+                                <span class="summary-value-total text-primary" id="total-amount" style="font-size: 1.6rem; font-weight: 800; text-shadow: 0 0 20px rgba(var(--primary-rgb), 0.25); color: var(--primary-500);">350,00 €</span>
+                            </div>
+                        </div>
+
+                        <!-- Garantía Bento Box -->
+                        <div class="glass-card" style="width: 100%; padding: 1.25rem; border-radius: 18px; display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+                            <div class="guarantee-icon" style="font-size: 2rem;">🛡️</div>
+                            <div class="guarantee-text">
+                                <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; color: white;">Garantía de Satisfacción</h4>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">¿No estás satisfecho tras la primera reunión? Te devolvemos el 100% de tu dinero de inmediato.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Pasarela de Pago Seguro -->
+            <div class="checkout-payment-col">
+                <div class="bento-shell">
+                    <div class="bento-core" style="padding: 2rem; justify-content: flex-start; gap: 1.5rem;">
+                        <div class="payment-header" style="text-align: center; width: 100%; margin-bottom: 1rem;">
+                            <span class="bento-badge" style="background: rgba(var(--primary-rgb), 0.08); margin-bottom: 0.75rem;">🔒 Conexión Encriptada SSL</span>
+                            <h2 class="bento-title" style="font-size: 1.6rem;">Método de Pago</h2>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">Completa tu transacción de forma segura con PayPal en un solo clic.</p>
+                        </div>
+
+                        <!-- Calendario de Suscripción (Solo visible para pagos de mantenimiento) -->
+                        <div id="subscription-payment-schedule" class="glass-card" style="width: 100%; padding: 1.25rem; border-radius: 16px; border: 1px dashed rgba(20, 241, 149, 0.35); background: rgba(20, 241, 149, 0.02); display: flex; flex-direction: column; gap: 0.65rem; box-shadow: inset 0 1px 1px rgba(255,255,255,0.03); margin-bottom: 0.5rem; display: none;">
+                            <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--primary-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
+                                <span>📅</span> Calendario de Facturación IA
+                            </span>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: white; margin-top: 0.25rem;">
+                                <span>Pago Inicial (Hoy)</span>
+                                <strong id="schedule-initial-charge">350,00 €</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.65rem;">
+                                <span>Suscripción de Mantenimiento</span>
+                                <strong id="schedule-recurring-charge" style="color: var(--primary-400);">+ 30,00 €/mes</strong>
+                            </div>
+                            <span style="font-size: 0.7rem; color: var(--text-tertiary); font-style: italic; line-height: 1.3; margin-top: 0.25rem; display: block; text-align: left;">
+                                * Nota: El pago de hoy cubre la instalación de tu servicio. La suscripción de mantenimiento se activará automáticamente a partir del segundo mes.
+                            </span>
+                        </div>
+
+                        <!-- PayPal Button Container -->
+                        <div id="paypal-button-container" style="width: 100%; min-height: 150px; position: relative; z-index: 10;">
+                            <!-- PayPal SDK Smart Buttons will be loaded here -->
+                            <div class="loading-paypal-spinner" id="paypal-spinner" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 2rem;">
+                                <div class="spinner"></div>
+                                <span style="font-size: 0.85rem; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace;">Cargando Pasarela Segura...</span>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Simulación de Pago (Modo Prueba) -->
+                        <div class="test-payment-container" style="width: 100%; text-align: center; margin-top: 0.5rem; border-top: 1px dashed var(--border-glass); padding-top: 1.25rem;">
+                            <span style="font-size: 0.75rem; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; display: block; margin-bottom: 0.75rem;">🔧 MODO DE VERIFICACIÓN (PAGO DE PRUEBA)</span>
+                            <button id="btn-test-payment" class="btn-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 700; color: var(--primary-400); border-color: rgba(var(--primary-rgb), 0.3); background: rgba(var(--primary-rgb), 0.03); padding: 0.75rem 1.5rem; border-radius: 12px; cursor: pointer; transition: all 0.4s ease;">
+                                🚀 Simular Pago Exitoso
+                            </button>
+                        </div>
+
+                        <!-- Security Badges -->
+                        <div class="security-badges" style="width: 100%; display: flex; justify-content: center; gap: 1.5rem; border-top: 1px solid var(--border-glass); padding-top: 1.25rem; margin-top: auto; opacity: 0.7;">
+                            <div class="badge-item" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace;">
+                                <span>🔒</span> SSL 256-bit
+                            </div>
+                            <div class="badge-item" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace;">
+                                <span>💳</span> Tarjeta / PayPal
+                            </div>
+                            <div class="badge-item" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace;">
+                                <span>🤝</span> Sin Comisiones
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: Éxito y Calendly (Oculta al inicio) -->
+        <div class="checkout-success-section" id="checkout-success-section" style="display: none;">
+            <div class="bento-shell" style="max-width: 1000px; margin: 0 auto;">
+                <div class="bento-core" style="padding: 3rem 2rem; align-items: center; gap: 2rem; justify-content: flex-start;">
+                    
+                    <!-- Canvas para Confetti -->
+                    <canvas id="confetti-canvas" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;"></canvas>
+
+                    <!-- Mensaje de Éxito -->
+                    <div class="success-header" style="text-align: center; max-width: 600px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+                        <div class="success-icon-wrapper" style="width: 80px; height: 80px; border-radius: 50%; background: rgba(20, 241, 149, 0.1); border: 2px solid var(--primary-500); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary-500); box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);">
+                            ✓
+                        </div>
+                        <h2 class="bento-title" style="font-size: 2.4rem; color: white;">¡Pago Confirmado con Éxito!</h2>
+                        <p class="gradient-text" style="font-weight: 700; font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase;">Próximo paso: Agenda tu sesión</p>
+                        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem;">
+                            Hemos enviado tu recibo de pago por correo. Para empezar a trabajar de inmediato en tu solución de IA, por favor selecciona a continuación el día y la hora de tu **primera reunión técnica**.
+                        </p>
+                    </div>
+
+                    <!-- Contenedor del Widget Inline de Calendly -->
+                    <div id="calendly-booking-container" style="width: 100%; border: 1px solid var(--border-glass); border-radius: 20px; overflow: hidden; background: rgba(5,5,7,0.5); backdrop-filter: blur(10px); z-index: 2; position: relative;">
+                        <!-- Calendly Inline Widget -->
+                        <div id="calendly-inline-widget-target" style="min-width:320px; height:700px; width:100%;">
+                            <div class="loading-calendly" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 1rem;">
+                                <div class="spinner"></div>
+                                <span style="font-size: 0.85rem; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace;">Cargando calendario seguro...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Soporte alternativo -->
+                    <p style="font-size: 0.85rem; color: var(--text-tertiary); z-index: 2; text-align: center;">
+                        ¿Tienes problemas para agendar? Escríbenos directamente a <a href="mailto:soporte@benia.agency" style="color: var(--primary-500); text-decoration: none;">soporte@benia.agency</a> y lo gestionamos manualmente.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer minimalista -->
+    <footer class="footer" style="padding-top: 3rem; border-top: 1px solid var(--border-glass);">
+        <div class="container text-center" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <img src="images/logo.png" alt="BENIA Logo" class="nav-logo" style="height: 30px; opacity: 0.6;">
+            <p style="font-size: 0.8rem; color: var(--text-tertiary);">&copy; 2024 BENIA AGENCY. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Librería de Confetti vía CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Calendly Widget JS -->
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+    <!-- PayPal SDK (Cargado de forma segura y dinámica vía Javascript) -->
+    <script src="checkout.js"></script>
+</body>
+
+</html>

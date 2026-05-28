@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas de Grandes Modelos de Lenguaje (LLMs) para Empresas | BENIA AGENCY</title>
+    <meta name="description"
+        content="Comparativa técnica en profundidad de los mejores LLMs en 2026: Claude 3.5 Sonnet, Gemini 1.5 Pro, GPT-4o y Llama 3. Descubre qué inteligencia artificial elegir según tu caso de uso empresarial.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Specific page styles for LLM Atlas comparison matrix */
+        .llm-spec-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin: 3.5rem 0;
+        }
+        @media (max-width: 992px) {
+            .llm-spec-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 576px) {
+            .llm-spec-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .spec-card {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 1.75rem;
+            transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        .spec-card:hover {
+            transform: translateY(-4px);
+        }
+        .spec-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.05;
+            transition: opacity 0.5s ease;
+        }
+        .spec-card.claude:hover { border-color: #E05A47; }
+        .spec-card.gemini:hover { border-color: #1A73E8; }
+        .spec-card.openai:hover { border-color: #10a37f; }
+        .spec-card.meta:hover { border-color: #0064e0; }
+
+        .spec-card.claude::before { background: radial-gradient(circle at top, #E05A47, transparent 70%); }
+        .spec-card.gemini::before { background: radial-gradient(circle at top, #1A73E8, transparent 70%); }
+        .spec-card.openai::before { background: radial-gradient(circle at top, #10a37f, transparent 70%); }
+        .spec-card.meta::before { background: radial-gradient(circle at top, #0064e0, transparent 70%); }
+
+        .spec-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1rem;
+        }
+        .spec-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: white;
+        }
+        .logo-c { background: #E05A47; }
+        .logo-g { background: linear-gradient(135deg, #1A73E8 0%, #0DF273 100%); }
+        .logo-o { background: #10a37f; }
+        .logo-m { background: #0064e0; }
+
+        .spec-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.1;
+        }
+        .spec-provider {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+        .spec-list {
+            list-style: none;
+            padding-left: 0 !important;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+        .spec-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
+            padding-bottom: 0.25rem;
+        }
+        .spec-list span {
+            font-family: 'JetBrains Mono', monospace;
+            color: white;
+        }
+        .spec-best {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary-500);
+            text-align: center;
+        }
+
+        /* Responsive comparison table */
+        .comparison-table-wrapper {
+            overflow-x: auto;
+            margin: 4rem 0;
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            background: rgba(3, 3, 5, 0.4);
+            backdrop-filter: blur(10px);
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+            min-width: 700px;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .comparison-table th {
+            background: rgba(255, 255, 255, 0.01);
+            color: white;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        .tag-high { color: var(--primary-500); font-weight: 600; }
+        .tag-mid { color: #FFC107; }
+        .tag-low { color: var(--text-tertiary); }
+    </style>
+</head>
+
+<body class="dark-mode" style="overflow-y: auto !important;">
+    <div id="particles-container"></div>
+    <div class="glow-ambient"></div>
+    <div class="glow-ambient-left"></div>
+
+    <!-- Minimal Back Nav -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="../index.html" class="logo-link">
+                    <img src="../images/logo.png" alt="BENIA Logo" class="nav-logo">
+                </a>
+                <div class="nav-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYS_ONLINE // ACADEMY ACTIVE</span>
+                </div>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="../index.html" class="nav-link">Inicio</a>
+                <a href="../index.html#servicios" class="nav-link">Servicios</a>
+                <a href="../index.html#guia-ia" class="nav-link active">Guía IA</a>
+                <a href="../index.html#contacto" class="nav-link nav-btn">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="subpage-container">
+        <header class="subpage-header">
+            <div class="breadcrumbs">
+                <a href="../index.html">Inicio</a>
+                <span class="breadcrumb-separator">//</span>
+                <a href="../index.html#guia-ia">Guía IA</a>
+                <span class="breadcrumb-separator">//</span>
+                <span class="breadcrumb-current">Atlas de Modelos</span>
+            </div>
+            <h1 class="subpage-title">El Atlas de Frontera: <br><span class="gradient-text">Comparativa de LLMs en la Actualidad</span></h1>
+            <p class="subpage-intro">El éxito de una integración estratégica de Inteligencia Artificial depende de elegir el cerebro cognitivo idóneo para cada tarea. Conoce y compara los modelos de lenguaje líderes del mercado.</p>
+        </header>
+
+        <article class="subpage-content">
+            <p>La era de utilizar una sola herramienta monolítica para todas las necesidades operativas de una empresa ha terminado. En la actualidad, una arquitectura informática avanzada se basa en la <strong>orquestación selectiva y modular</strong>: conectar el modelo de lenguaje de gran tamaño (LLM) que ofrezca la mejor combinación de velocidad, coste, ventana de contexto y capacidad de razonamiento para cada flujo lógico de trabajo.</p>
+            
+            <p>Analizamos las capacidades distintivas de las cuatro tecnologías de frontera dominantes en la industria actual para ayudarte a elegir el motor perfecto según tu caso de uso empresarial.</p>
+
+            <!-- Technical Spec Grid -->
+            <div class="llm-spec-grid">
+                <!-- Claude -->
+                <a href="claude.html" class="newsletter-link-wrapper" style="height: 100%;">
+                    <div class="spec-card claude" style="height: 100%;">
+                        <div>
+                            <div class="spec-header">
+                                <div class="spec-logo logo-c" style="background: transparent; border: 1px solid rgba(255,255,255,0.08);">
+                                    <svg class="llm-svg-logo" viewBox="0 0 24 24"><path d="M4 20L12 4L20 20M7 14H17" /></svg>
+                                </div>
+                                <div>
+                                    <h3 class="spec-name">Claude 3.5</h3>
+                                    <span class="spec-provider">Anthropic</span>
+                                </div>
+                            </div>
+                            <ul class="spec-list">
+                                <li>Ventana Contexto <span>200K tks</span></li>
+                                <li>Velocidad API <span>Media-Alta</span></li>
+                                <li>Lógica Lógica <span>Excelente</span></li>
+                                <li>Coste por Millón <span>$3.00</span></li>
+                            </ul>
+                        </div>
+                        <div class="spec-best">MEJOR PARA: Código y Lógica</div>
+                    </div>
+                </a>
+
+                <!-- Gemini -->
+                <a href="gemini.html" class="newsletter-link-wrapper" style="height: 100%;">
+                    <div class="spec-card gemini" style="height: 100%;">
+                        <div>
+                            <div class="spec-header">
+                                <div class="spec-logo logo-g" style="background: transparent; border: 1px solid rgba(255,255,255,0.08);">
+                                    <svg class="llm-svg-logo" viewBox="0 0 24 24"><path d="M12 2C12 7.5 16.5 12 22 12C16.5 12 12 16.5 12 22C12 16.5 7.5 12 2 12C7.5 12 12 7.5 12 2Z" /></svg>
+                                </div>
+                                <div>
+                                    <h3 class="spec-name">Gemini 1.5</h3>
+                                    <span class="spec-provider">Google</span>
+                                </div>
+                            </div>
+                            <ul class="spec-list">
+                                <li>Ventana Contexto <span>2M+ tks</span></li>
+                                <li>Velocidad API <span>Muy Alta</span></li>
+                                <li>Lógica Lógica <span>Muy Buena</span></li>
+                                <li>Coste por Millón <span>$7.00 (Pro)</span></li>
+                            </ul>
+                        </div>
+                        <div class="spec-best">MEJOR PARA: Contexto Gigante</div>
+                    </div>
+                </a>
+
+                <!-- OpenAI -->
+                <a href="gpt4o.html" class="newsletter-link-wrapper" style="height: 100%;">
+                    <div class="spec-card openai" style="height: 100%;">
+                        <div>
+                            <div class="spec-header">
+                                <div class="spec-logo logo-o" style="background: transparent; border: 1px solid rgba(255,255,255,0.08);">
+                                    <svg class="llm-svg-logo" viewBox="0 0 24 24"><path d="M4.5 10.5C3.5 12 3 13.5 3 15C3 18.5 6 21 9.5 21C11.5 21 13 20 14 19M19.5 13.5C20.5 12 21 10.5 21 9C21 5.5 18 3 14.5 3C12.5 3 11 4 10 5M4.5 13.5C5.5 15 7 16 9 16C12.5 16 15 13.5 15 10C15 8.5 14.5 7 13.5 6.5M19.5 10.5C18.5 9 17 8 15 8C11.5 8 9 10.5 9 14C9 15.5 9.5 17 10.5 17.5" /></svg>
+                                </div>
+                                <div>
+                                    <h3 class="spec-name">GPT-4o</h3>
+                                    <span class="spec-provider">OpenAI</span>
+                                </div>
+                            </div>
+                            <ul class="spec-list">
+                                <li>Ventana Contexto <span>128K tks</span></li>
+                                <li>Velocidad API <span>Ultra Rápida</span></li>
+                                <li>Lógica Lógica <span>Muy Buena</span></li>
+                                <li>Coste por Millón <span>$5.00</span></li>
+                            </ul>
+                        </div>
+                        <div class="spec-best">MEJOR PARA: Voz y Velocidad</div>
+                    </div>
+                </a>
+
+                <!-- Meta -->
+                <a href="llama.html" class="newsletter-link-wrapper" style="height: 100%;">
+                    <div class="spec-card meta" style="height: 100%;">
+                        <div>
+                            <div class="spec-header">
+                                <div class="spec-logo logo-m" style="background: transparent; border: 1px solid rgba(255,255,255,0.08);">
+                                    <svg class="llm-svg-logo" viewBox="0 0 24 24"><path d="M7 17C10.5 17 12 14.5 12 12C12 9.5 10.5 7 7 7C3.5 7 2 9.5 2 12C2 14.5 3.5 17 7 17ZM17 17C20.5 17 22 14.5 22 12C22 9.5 20.5 7 17 7C13.5 7 12 9.5 12 12C12 14.5 13.5 17 17 17Z" /></svg>
+                                </div>
+                                <div>
+                                    <h3 class="spec-name">Llama 3.1</h3>
+                                    <span class="spec-provider">Meta AI</span>
+                                </div>
+                            </div>
+                            <ul class="spec-list">
+                                <li>Ventana Contexto <span>128K tks</span></li>
+                                <li>Velocidad API <span>Variable</span></li>
+                                <li>Lógica Lógica <span>Buena</span></li>
+                                <li>Coste por Millón <span>Código Abierto</span></li>
+                            </ul>
+                        </div>
+                        <div class="spec-best">MEJOR PARA: Privacidad Local</div>
+                    </div>
+                </a>
+            </div>
+
+            <h2>Claude 3.5 Sonnet (Anthropic): El Maestro del Razonamiento Complejo</h2>
+            <p>Creado con un fuerte enfoque en seguridad institucional y razonamiento de alta fidelidad, <strong>Claude 3.5 vs GPT-4o vs Gemini</strong> demuestra un rendimiento insuperable en tareas que exigen un entendimiento lógico impecable, asimilación y cumplimiento riguroso de reglas y redacción de código libre de alucinaciones.</p>
+            
+            <ul>
+                <li><strong>Fortaleza principal:</strong> Capacidad analítica de nivel superior. Sigue instrucciones largas y detalladas de manera perfecta.</li>
+                <li><strong>Caso de uso óptimo:</strong> Agentes autónomos para orquestación de workflows, redacción de documentos corporativos técnicos complejos y asistentes avanzados de programación.</li>
+            </ul>
+
+            <h2>Gemini 1.5 Pro & Flash (Google): La Ventana de Contexto Infinita</h2>
+            <p>La propuesta de valor de Google con la familia Gemini radica en su capacidad de procesamiento de información a gran escala. Su ventana de contexto masiva de **2 millones de tokens** permite asimilar bases de código enteras, horas de contenido multimedia (vídeo e instrucciones auditivas) o extensos catálogos de datos históricos en un solo prompt.</p>
+            
+            <ul>
+                <li><strong>Fortaleza principal:</strong> Contexto multimodal masivo. Es capaz de "leer" miles de páginas de manuales en segundos.</li>
+                <li><strong>Caso de uso óptimo:</strong> Buscadores inteligentes empresariales (RAG) sobre bases de conocimiento gigantescas, auditorías completas de código heredado y procesamiento inteligente de archivos multimedia corporativos.</li>
+            </ul>
+
+            <h2>GPT-4o (OpenAI): Velocidad de Respuesta Relámpago y Multimodalidad</h2>
+            <p>El buque insignia de OpenAI se enfoca en la velocidad operativa, la eficiencia de APIs y las interacciones interconectadas de voz en tiempo real con latencias extremadamente bajas. Es el modelo más implementado a nivel de ecosistemas de desarrollo por su estabilidad global y enorme documentación disponible.</p>
+            
+            <ul>
+                <li><strong>Fortaleza principal:</strong> Respuesta de baja latencia e integraciones de voz nativas avanzadas.</li>
+                <li><strong>Caso de uso óptimo:</strong> Canales de ventas telefónicas por IA, chats de soporte instantáneo y procesamiento ágil omnicanal a gran escala.</li>
+            </ul>
+
+            <h2>Llama 3 / 3.1 (Meta): La Soberanía Total con Código Abierto</h2>
+            <p>Para organizaciones que operan bajo rigurosas regulaciones de privacidad de datos (banca, salud, legal), el procesamiento a través de APIs de terceros en la nube pública es inviable. Meta ofrece con Llama un rendimiento equivalente a los modelos propietarios de frontera, pero de forma 100% gratuita y abierta para despliegues locales.</p>
+            
+            <ul>
+                <li><strong>Fortaleza principal:</strong> Licencia abierta comercial, permitiendo el auto-alojamiento local en servidores propios (On-Premise).</li>
+                <li><strong>Caso de uso óptimo:</strong> Procesamiento interno de datos ultra-confidenciales, soberanía digital y reducción drástica de costes de tokens a largo plazo mediante GPU dedicada.</li>
+            </ul>
+
+            <!-- Analytical Comparison Matrix -->
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Modelo</th>
+                            <th>Lógica</th>
+                            <th>Velocidad</th>
+                            <th>Capacidad Contexto</th>
+                            <th>Coste Operativo</th>
+                            <th>Soberanía</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Claude 3.5 Sonnet</strong></td>
+                            <td class="tag-high">Excelente (10/10)</td>
+                            <td class="tag-mid">Media-Alta</td>
+                            <td class="tag-mid">200K tks</td>
+                            <td class="tag-mid">Medio</td>
+                            <td class="tag-low">Nube Privada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gemini 1.5 Pro</strong></td>
+                            <td class="tag-high">Muy Buena (9/10)</td>
+                            <td class="tag-high">Alta</td>
+                            <td class="tag-high">2M+ tks</td>
+                            <td class="tag-low">Alto</td>
+                            <td class="tag-low">Nube Privada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GPT-4o</strong></td>
+                            <td class="tag-high">Muy Buena (9/10)</td>
+                            <td class="tag-high">Ultra Rápida</td>
+                            <td class="tag-mid">128K tks</td>
+                            <td class="tag-mid">Medio</td>
+                            <td class="tag-low">Nube Privada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Llama 3.1 (405B)</strong></td>
+                            <td class="tag-high">Muy Buena (9/10)</td>
+                            <td class="tag-mid">Variable (GPU)</td>
+                            <td class="tag-mid">128K tks</td>
+                            <td class="tag-high">Bajo (Auto-alojado)</td>
+                            <td class="tag-high">Total (Local)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="back-btn-wrapper">
+                <a href="../index.html#guia-ia" class="btn-secondary">
+                    <span>← Volver a la Guía IA</span>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer style="padding: 4rem 0; border-top: 1px solid var(--border-glass); margin-top: 5rem; text-align: center; font-size: 0.9rem; color: var(--text-tertiary);">
+        <p>&copy; 2026 BENIA AGENCY. Todos los derechos reservados. Optimizado para el éxito empresarial.</p>
+    </footer>
+
+    <!-- Simple matrix canvas script for background -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const particlesContainer = document.getElementById('particles-container');
+            if (particlesContainer) {
+                const particleCount = 25;
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    const size = Math.random() * 4 + 1;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 20 + 's';
+                    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BENIA AGENCY | Automatización e Inteligencia Artificial</title>
+    <meta name="description"
+        content="Elevando negocios a través de la innovación impulsada por IA. Automatizaciones, landing pages inteligentes y mentorías expertas.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Calendly Widget CSS -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+</head>
+
+<body class="dark-mode">
+
+    <div id="global-mouse-glow"></div>
+
+    <nav class="navbar reveal-active" id="navbar" style="opacity: 1; transform: translate(-50%, 0); pointer-events: all;">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="#" class="logo-link">
+                    <img src="images/logo.png" alt="BENIA Logo" class="nav-logo">
+                </a>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="#hero" class="nav-link">Inicio</a>
+                <a href="#servicios" class="nav-link">Servicios</a>
+                <a href="#guia-ia" class="nav-link">Guía IA</a>
+                <a href="#about" class="nav-link">Sobre Mí</a>
+                <a href="#contacto" class="nav-link nav-btn mobile-only-btn">Contacto</a>
+            </div>
+            <div class="nav-right">
+                <a href="#contacto" class="nav-btn-desktop">Contacto</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Menu de Navegación">
+                <div class="hamburger-bar bar-top"></div>
+                <div class="hamburger-bar bar-bottom"></div>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="hero-grid-bg"></div>
+            <div class="hero-mouse-glow"></div>
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="label-reveal">
+                        <span class="label-pill">🚀 Innovación con IA Aplicada</span>
+                    </div>
+                    <h1 class="hero-title-spotlight" id="hero-spotlight">
+                        Del trabajo manual a la <span class="gradient-text">automatización inteligente</span>
+                    </h1>
+                    <p class="hero-subtitle">Convertimos operaciones complejas y repetitivas en sistemas autónomos y estables de IA. Reducción inmediata de hasta el 80% en costes operativos con total transparencia y control.</p>
+                    <div class="hero-actions">
+                        <a href="#servicios" class="btn-primary">
+                            <span>Explorar Servicios</span>
+                            <span class="btn-arrow-wrapper">
+                                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </a>
+                        <a href="#about" class="btn-secondary">
+                            <span>Saber Más</span>
+                            <span class="btn-arrow-wrapper">
+                                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="servicios" class="services-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <div class="label-reveal" style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                        <span class="label-pill">⚡ Capacidades Avanzadas</span>
+                    </div>
+                    <h2 class="section-title">Soluciones <span class="gradient-text">Inteligentes</span></h2>
+                    <p class="section-subtitle">Nuestra especialidad es llevar la complejidad de la Inteligencia Artificial a resultados de negocio tangibles, medibles y simples.</p>
+                </div>
+                <div class="bento-grid">
+                    <!-- Service 1: Automaciones (Destacado - span 8) -->
+                    <div class="bento-card col-span-8 featured-card" data-service="automatizacion">
+                        <div class="bento-shell">
+                            <div class="bento-core">
+                                <div class="bento-visual">
+                                    <img src="images/workspace_automation.png" alt="Automatizaciones de IA" class="bento-image">
+                                </div>
+                                <div class="bento-content">
+                                    <div class="bento-header">
+                                        <span class="bento-badge">Eficiencia</span>
+                                        <h3 class="bento-title">Automatizaciones de IA</h3>
+                                    </div>
+                                    <p class="bento-description">Workflows autónomos con Make/n8n para erradicar la carga de tareas repetitivas y sincronizar tus sistemas 24/7 sin errores.</p>
+                                    <div class="bento-footer">
+                                        <span class="bento-link">
+                                            <span>Ver Métricas de Ahorro</span>
+                                            <span class="bento-arrow-capsule">
+                                                <svg class="bento-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 2: Landing Pages (span 4) -->
+                    <div class="bento-card col-span-4" data-service="landings">
+                        <div class="bento-shell">
+                            <div class="bento-core">
+                                <div class="bento-visual">
+                                    <img src="images/mockup_conversion.png" alt="Landings Inteligentes" class="bento-image">
+                                </div>
+                                <div class="bento-content">
+                                    <div class="bento-header">
+                                        <span class="bento-badge">Conversión</span>
+                                        <h3 class="bento-title">Landings Inteligentes</h3>
+                                    </div>
+                                    <p class="bento-description">Funnels automatizados de alto impacto con chats IA embebidos y optimización continua de conversión (CRO).</p>
+                                    <div class="bento-footer">
+                                        <span class="bento-link">
+                                            <span>Ver Impacto</span>
+                                            <span class="bento-arrow-capsule">
+                                                <svg class="bento-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 3: Soluciones IA (span 6) -->
+                    <div class="bento-card col-span-6" data-service="soluciones-premium">
+                        <div class="bento-shell">
+                            <div class="bento-core">
+                                <div class="bento-visual">
+                                    <img src="images/server_precision.png" alt="Solución de Problemas" class="bento-image">
+                                </div>
+                                <div class="bento-content">
+                                    <div class="bento-header">
+                                        <span class="bento-badge">Algoritmos</span>
+                                        <h3 class="bento-title">Solución de Problemas</h3>
+                                    </div>
+                                    <p class="bento-description">Diagnóstico técnico y ejecución experta para desafíos lógicos complejos de automatización interna y procesamiento.</p>
+                                    <div class="bento-footer">
+                                        <span class="bento-link">
+                                            <span>Ver Metodología</span>
+                                            <span class="bento-arrow-capsule">
+                                                <svg class="bento-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 4: Mentorías (span 6) -->
+                    <div class="bento-card col-span-6" data-service="mentorias">
+                        <div class="bento-shell">
+                            <div class="bento-core">
+                                <div class="bento-visual">
+                                    <img src="images/strategy_meeting.png" alt="Mentorías Especializadas" class="bento-image">
+                                </div>
+                                <div class="bento-content">
+                                    <div class="bento-header">
+                                        <span class="bento-badge">Capacitación</span>
+                                        <h3 class="bento-title">Mentorías Especializadas</h3>
+                                    </div>
+                                    <p class="bento-description">Sesiones individuales intensivas técnicas para transferir el conocimiento clave en IA y automatización a tu equipo de trabajo.</p>
+                                    <div class="bento-footer">
+                                        <span class="bento-link">
+                                            <span>Saber más</span>
+                                            <span class="bento-arrow-capsule">
+                                                <svg class="bento-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 7: Custom CTA Card (span 12) -->
+                    <div class="bento-card col-span-12 cta-bento-card" onclick="openCalendly(event)">
+                        <div class="bento-shell">
+                            <div class="bento-core">
+                                <div class="bento-content flex-center">
+                                    <div class="bento-header text-center">
+                                        <span class="bento-badge badge-accent">Diagnóstico Gratuito</span>
+                                        <h3 class="bento-title">¿Cómo encaja la IA en tu empresa?</h3>
+                                    </div>
+                                    <p class="bento-description text-center">Analizamos tus procesos actuales y diseñamos una propuesta estratégica adaptada a tus objetivos en 30 minutos de forma totalmente gratuita.</p>
+                                    <div class="bento-footer justify-center" style="margin-top: 1rem;">
+                                        <span class="btn-primary">
+                                            <span>Agendar Diagnóstico 30m</span>
+                                            <span class="btn-arrow-wrapper">
+                                                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonios" class="testimonials-section">
+            <div class="container">
+                <div class="testimonial-wrapper">
+                    <div class="testimonial-quote-mark">“</div>
+                    <blockquote class="testimonial-quote">
+                        La automatización de nuestros embudos de ventas con agentes IA redujo nuestro tiempo de respuesta inicial de 4 horas a menos de 2 minutos. El impacto en la tasa de cierre fue inmediato.
+                    </blockquote>
+                    <cite class="testimonial-author">
+                        <span class="author-name">Alejandro Ruiz</span>
+                        <span class="author-title">CEO & Fundador en NexusTech</span>
+                    </cite>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Guide & Newsletter Section -->
+        <section id="guia-ia" class="newsletter-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <div class="label-reveal" style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                        <span class="label-pill">📰 Newsletter Editorial</span>
+                    </div>
+                    <h2 class="section-title">Guía de IA para <span class="gradient-text">Empresas</span></h2>
+                    <p class="section-subtitle">Un análisis táctico y simplificado en formato newsletter diseñado para directores, fundadores y equipos de operaciones.</p>
+                </div>
+                <div class="newsletter-grid staggered-grid">
+                    <!-- Module 1: La Hoja de Ruta (span 6) -->
+                    <a href="guia/hoja-de-ruta.html" class="newsletter-link-wrapper col-span-6">
+                        <div class="newsletter-item bento-shell reveal-hidden">
+                            <div class="bento-core">
+                                <div class="newsletter-content">
+                                    <div class="newsletter-header">
+                                        <span class="newsletter-num font-mono">01</span>
+                                        <h3 class="newsletter-card-title">La Hoja de Ruta Táctica</h3>
+                                        <span class="newsletter-tag">Cómo implementar</span>
+                                    </div>
+                                    <p class="newsletter-intro">La integración exitosa de la IA en una organización no ocurre por copiar herramientas; requiere una hoja de ruta metodológica estructurada:</p>
+                                    <ul class="newsletter-steps">
+                                        <li class="step-item">
+                                            <span class="step-number">1</span>
+                                            <div class="step-text">
+                                                <strong>Diagnóstico de Fricción:</strong> Auditoría interna para mapear flujos manuales repetitivos en soporte, ventas o administración.
+                                            </div>
+                                        </li>
+                                        <li class="step-item">
+                                            <span class="step-number">2</span>
+                                            <div class="step-text">
+                                                <strong>Integración Silenciosa:</strong> Conexión nativa de APIs mediante Make/n8n sin alterar los sistemas actuales del equipo de trabajo.
+                                            </div>
+                                        </li>
+                                        <li class="step-item">
+                                            <span class="step-number">3</span>
+                                            <div class="step-text">
+                                                <strong>Orquestación Multiagente:</strong> Despliegue de agentes autónomos especialistas con lenguajes calibrados para ejecutar tareas 24/7.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 2: Pilares de Impacto (span 6) -->
+                    <a href="guia/pilares-operativos.html" class="newsletter-link-wrapper col-span-6">
+                        <div class="newsletter-item bento-shell reveal-hidden">
+                            <div class="bento-core">
+                                <div class="newsletter-content">
+                                    <div class="newsletter-header">
+                                        <span class="newsletter-num font-mono">02</span>
+                                        <h3 class="newsletter-card-title">Pilares de Impacto Operativo</h3>
+                                        <span class="newsletter-tag">Qué áreas refuerza</span>
+                                    </div>
+                                    <p class="newsletter-intro">Los sistemas inteligentes actúan como un multiplicador de fuerza interna en tu compañía, reforzando tres pilares operativos críticos:</p>
+                                    <div class="impact-cards-container">
+                                        <div class="impact-mini-card">
+                                            <h4 class="impact-title">
+                                                <span class="impact-dot"></span>
+                                                Reducción de Costes (-80%)
+                                            </h4>
+                                            <p class="impact-desc">Liberación inmediata de tu personal de soporte de la carga del triaje operativo, permitiendo enfocar su talento en casos complejos de alto valor.</p>
+                                        </div>
+                                        <div class="impact-mini-card">
+                                            <h4 class="impact-title">
+                                                <span class="impact-dot"></span>
+                                                Precisión Libre de Errores
+                                            </h4>
+                                            <p class="impact-desc">Respuestas inmediatas basadas en datos sin margen para olvidos, fatiga, retrasos humanos o información de producto incorrecta.</p>
+                                        </div>
+                                        <div class="impact-mini-card">
+                                            <h4 class="impact-title">
+                                                <span class="impact-dot"></span>
+                                                Escalabilidad Omnicanal
+                                            </h4>
+                                            <p class="impact-desc">Capacidad elástica para atender e interactuar con miles de clientes de manera simultánea en WhatsApp, Email y CRM sin alterar tu infraestructura.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 3: El Atlas de LLMs (span 12) -->
+                    <a href="guia/atlas-llms.html" class="newsletter-link-wrapper col-span-12">
+                        <div class="newsletter-item bento-shell reveal-hidden">
+                            <div class="bento-core">
+                                <div class="newsletter-content">
+                                    <div class="newsletter-header flex-row-justify">
+                                        <div>
+                                            <span class="newsletter-num font-mono">03</span>
+                                            <h3 class="newsletter-card-title">El Atlas de Frontera (Modelos de Lenguaje)</h3>
+                                        </div>
+                                        <span class="newsletter-tag">LLMs de la actualidad</span>
+                                    </div>
+                                    <p class="newsletter-intro" style="margin-bottom: 2rem;">No existe un único modelo óptimo para todo. Una arquitectura empresarial moderna utiliza una combinación orquestada de diferentes tecnologías según el caso de uso:</p>
+                                    <div class="llms-grid">
+                                        <!-- LLM 1: Claude -->
+                                        <div class="llm-card border-claude">
+                                            <div class="llm-header">
+                                                <span class="llm-logo logo-claude">C</span>
+                                                <div>
+                                                    <h4 class="llm-name">Claude 3.5 Sonnet</h4>
+                                                    <span class="llm-provider font-mono">Anthropic</span>
+                                                </div>
+                                            </div>
+                                            <p class="llm-desc">Considerado el líder indiscutible en razonamiento lógico complejo, escritura natural y generación limpia de código estructurado.</p>
+                                            <div class="llm-usecase font-mono">
+                                                <span>USO:</span> Orquestación lógica, agentes conversacionales autónomos y flujos lógicos rigurosos.
+                                            </div>
+                                        </div>
+
+                                        <!-- LLM 2: Gemini -->
+                                        <div class="llm-card border-gemini">
+                                            <div class="llm-header">
+                                                <span class="llm-logo logo-gemini">G</span>
+                                                <div>
+                                                    <h4 class="llm-name">Gemini 1.5 Pro & Flash</h4>
+                                                    <span class="llm-provider font-mono">Google</span>
+                                                </div>
+                                            </div>
+                                            <p class="llm-desc">Campeón mundial en capacidad de contexto masivo (2M+ tokens). Capaz de asimilar bases enteras de código, vídeo e información de golpe.</p>
+                                            <div class="llm-usecase font-mono">
+                                                <span>USO:</span> Análisis masivo de datos multimedia, auditoría completa de repositorios y documentación de gran tamaño.
+                                            </div>
+                                        </div>
+
+                                        <!-- LLM 3: GPT-4o -->
+                                        <div class="llm-card border-openai">
+                                            <div class="llm-header">
+                                                <span class="llm-logo logo-openai">O</span>
+                                                <div>
+                                                    <h4 class="llm-name">GPT-4o</h4>
+                                                    <span class="llm-provider font-mono">OpenAI</span>
+                                                </div>
+                                            </div>
+                                            <p class="llm-desc">Modelo multimodal nativo optimizado para velocidades de respuesta relámpago, capacidades de voz avanzadas e integraciones APIs eficientes.</p>
+                                            <div class="llm-usecase font-mono">
+                                                <span>USO:</span> Dinámicas de voz por IA, traductores automáticos y APIs de baja latencia con respuesta inmediata.
+                                            </div>
+                                        </div>
+
+                                        <!-- LLM 4: Llama 3 -->
+                                        <div class="llm-card border-meta">
+                                            <div class="llm-header">
+                                                <span class="llm-logo logo-meta">L</span>
+                                                <div>
+                                                    <h4 class="llm-name">Llama 3 / 3.1</h4>
+                                                    <span class="llm-provider font-mono">Meta</span>
+                                                </div>
+                                            </div>
+                                            <p class="llm-desc">El gigante del código abierto. Proporciona un rendimiento equivalente a modelos propietarios pero con total privacidad y soberanía de datos.</p>
+                                            <div class="llm-usecase font-mono">
+                                                <span>USO:</span> Despliegues locales e independientes, procesamiento offline altamente confidencial y modelado adaptado on-premise.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <div class="about-content">
+                    <h2 class="section-title">Sobre <span class="text-primary">BENIA</span></h2>
+                    <p class="about-text">BENIA AGENCY nace para cerrar la brecha entre empresas tradicionales y
+                        automatización inteligente mediante sistemas autónomos, agentes IA y optimización continua.</p>
+                    <p class="about-text">Nuestra propuesta de valor es simple: convertimos negocios manuales en
+                        ecosistemas autónomos que reducen costes y escalan ingresos sin ampliar plantilla.</p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <span class="stat-num">2+</span>
+                            <span class="stat-txt">Años de Exp.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fused Contact & CTA Section -->
+        <section id="contacto" class="contact-section">
+            <div class="container">
+                <div class="contact-cta-card glass-card reveal-hidden">
+                    <div class="contact-cta-content text-center">
+                        <h2 class="cta-title">¿Listo para automatizar tu éxito?</h2>
+                        <p class="cta-subtitle">Únete a la nueva era de la eficiencia empresarial hoy mismo. Cuéntanos
+                            tu negocio y diseñaremos la estrategia perfecta para ti.</p>
+                    </div>
+
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="company">Nombre Empresa</label>
+                                <input type="text" id="company" name="company" placeholder="Ej: Benia Corp" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email de Contacto</label>
+                                <input type="email" id="email" name="email" placeholder="tu@empresa.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="goal">¿Qué es lo que te gustaría conseguir gracias a la IA?</label>
+                            <textarea id="goal" name="goal" rows="4" placeholder="Cuéntanos tus objetivos y desafíos..."
+                                required></textarea>
+                        </div>
+                        <div class="form-actions text-center">
+                            <button type="submit" class="btn-primary btn-large glow-pulse">Enviar Propuesta y
+                                Empezar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <div class="logo-link">
+                    <img src="images/logo.png" alt="BENIA Logo" class="nav-logo">
+                </div>
+                <p class="footer-desc">Elevando el estándar de la IA aplicada. Transformando el futuro, hoy.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">LN</a>
+                    <a href="#" class="social-link">TW</a>
+                    <a href="#" class="social-link">IG</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">Servicios</h4>
+                <ul class="footer-links">
+                    <li><a href="#servicios">Automatizaciones</a></li>
+                    <li><a href="#servicios">Landings</a></li>
+                    <li><a href="#servicios">Soluciones IA</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">Empresa</h4>
+                <ul class="footer-links">
+                    <li><a href="#about">Sobre Mí</a></li>
+                    <li><a href="#showcase">Showcase</a></li>
+                    <li><a href="checkout.html" class="text-primary" style="font-weight: 600;">Contratar Servicio</a></li>
+                    <li><a href="habit-tracker.html" style="opacity: 0.8;">Habit Tracker</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">Contacto</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="openCalendly(event)">Agenda una llamada</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2024 BENIA AGENCY. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Service Detail Modal -->
+    <div id="service-modal" class="service-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass-card">
+            <button class="modal-close" id="modal-close">
+                <span class="close-icon">&times;</span>
+                <span class="close-text">VOLVER</span>
+            </button>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendly Widget JS -->
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+    <script src="script.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+
+</html>

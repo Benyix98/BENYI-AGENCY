@@ -2658,7 +2658,8 @@ h4 {
     text-align: center;
     margin-bottom: 2.5rem;
     overflow: visible;
-    font-size: clamp(3.2rem, 5vw, 4.8rem);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 4.6rem);
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.04em;

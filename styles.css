@@ -2653,12 +2653,16 @@ h4 {
 .hero-title-spotlight {
     position: relative;
     width: 100%;
-    height: clamp(80px, 10vw, 130px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: auto;
+    display: block;
+    text-align: center;
     margin-bottom: 2.5rem;
     overflow: visible;
+    font-size: clamp(3.2rem, 5vw, 4.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    color: white;
 }
 
 .spotlight-phrase {
@@ -2697,7 +2701,7 @@ h4 {
         font-size: clamp(1.4rem, 6.5vw, 2.2rem) !important;
     }
     .hero-title-spotlight {
-        height: 60px;
+        height: auto;
     }
     .hero-subtitle {
         margin-bottom: 2rem;

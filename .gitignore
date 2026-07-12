@@ -77,5 +77,8 @@ node_modules/
 .wrangler/
 
 # Backend runtime database (contains admin password hash + lead data —
-# regenerated locally/on-server from backend/.env, never committed)
-backend/db/
+# regenerated locally/on-server from backend/.env, never committed).
+# Only the data files are ignored — database.js/storage.js are source code.
+backend/db/*.db
+backend/db/*.db.lock
+backend/db/*.json

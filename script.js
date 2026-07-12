@@ -44,10 +44,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.hero-content, .section-header, .bento-card, .newsletter-item, .about-content, .contact-cta-card, .testimonial-wrapper').forEach(el => {
+    document.querySelectorAll('.hero-content, .section-header, .bento-card, .newsletter-item, .case-card, .about-content, .contact-cta-card, .testimonial-wrapper').forEach(el => {
         el.classList.add('reveal-hidden');
         observer.observe(el);
     });
+
+    // Casos de Éxito — escala el iframe de preview (390px mobile) al ancho real de la card
+    function fitPreviewIframes() {
+        document.querySelectorAll('.preview-viewport iframe').forEach(frame => {
+            const viewport = frame.parentElement;
+            if (!viewport) return;
+            const scale = viewport.clientWidth / 390;
+            frame.style.transform = `scale(${scale})`;
+        });
+    }
+    fitPreviewIframes();
+    window.addEventListener('resize', fitPreviewIframes);
 
     // Contact Form Handling
     const contactForm = document.getElementById('contact-form');

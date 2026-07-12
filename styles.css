@@ -2977,4 +2977,156 @@ h4 {
     margin-top: auto;
     text-align: right;
 }
+/* ============================================================= */
+/* Casos de Éxito (Showcase)                                     */
+/* ============================================================= */
+.showcase-section {
+    position: relative;
+    padding: 8rem 0;
+    background-image: radial-gradient(ellipse 60% 45% at 50% 0%, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%);
+}
 
+.cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 340px));
+    justify-content: center;
+    gap: 1.75rem;
+    margin-top: 3rem;
+}
+
+.case-link-wrapper {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.case-card.bento-shell {
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+}
+
+.case-card .bento-core {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.case-link-wrapper:hover .case-card.bento-shell {
+    background: rgba(var(--primary-rgb), 0.02);
+    border-color: rgba(var(--primary-rgb), 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.chrome-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.chrome-dots { display: flex; gap: 0.32rem; }
+.chrome-dots span { width: 7px; height: 7px; border-radius: 50%; display: block; }
+.chrome-dots span:nth-child(1) { background: #FF5F57; }
+.chrome-dots span:nth-child(2) { background: #FEBC2E; }
+.chrome-dots span:nth-child(3) { background: #28C840; }
+
+.chrome-url {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 100px;
+    padding: 0.2rem 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-tertiary);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.live-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--primary-500);
+    box-shadow: 0 0 6px var(--primary-500);
+    flex-shrink: 0;
+    animation: pulse-live-dot 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-live-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+.preview-viewport {
+    position: relative;
+    flex: 1;
+    background: #000000;
+    overflow: hidden;
+}
+
+.preview-viewport iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 390px;
+    height: 844px;
+    border: 0;
+    pointer-events: none;
+    transform-origin: top left;
+}
+
+.case-label {
+    padding: 1rem 1.1rem 1.15rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    flex-shrink: 0;
+}
+
+.case-label-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+}
+
+.case-client {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.case-arrow {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    flex-shrink: 0;
+}
+
+.case-link-wrapper:hover .case-arrow {
+    background: var(--primary-500);
+    border-color: var(--primary-500);
+    color: var(--bg-primary);
+    transform: rotate(45deg);
+}
+
+.case-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+}
+
+@media (max-width: 480px) {
+    .cases-grid { grid-template-columns: minmax(0, 320px); }
+}

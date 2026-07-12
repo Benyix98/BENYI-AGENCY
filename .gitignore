@@ -72,3 +72,10 @@ node_modules/
 .agent/
 .agents/
 .superpowers/
+
+# Cloudflare Workers build cache
+.wrangler/
+
+# Backend runtime database (contains admin password hash + lead data —
+# regenerated locally/on-server from backend/.env, never committed)
+backend/db/

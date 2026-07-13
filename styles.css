@@ -3001,7 +3001,7 @@ h4 {
 }
 
 .case-card.bento-shell {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 3 / 4;
     cursor: pointer;
 }
 
@@ -3079,52 +3079,6 @@ h4 {
     border: 0;
     pointer-events: none;
     transform-origin: top left;
-}
-
-.case-label {
-    padding: 1rem 1.1rem 1.15rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-    flex-shrink: 0;
-}
-
-.case-label-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.3rem;
-}
-
-.case-client {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--text-primary);
-}
-
-.case-arrow {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-glass);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-tertiary);
-    transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-    flex-shrink: 0;
-}
-
-.case-link-wrapper:hover .case-arrow {
-    background: var(--primary-500);
-    border-color: var(--primary-500);
-    color: var(--bg-primary);
-    transform: rotate(45deg);
-}
-
-.case-desc {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    line-height: 1.45;
 }
 
 @media (max-width: 480px) {

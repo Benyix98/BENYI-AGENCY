@@ -2,10 +2,24 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 
+const db = require('./db/storage');
 const leadsRouter = require('./routes/leads');
 const chatRouter = require('./routes/chat');
 const adminRouter = require('./routes/admin');
+
+// Asegura el usuario admin en cada arranque a partir de las variables de
+// entorno. Idempotente: crea el admin si no existe y actualiza su
+// contraseña si cambió ADMIN_PASSWORD, así el panel siempre es accesible
+// tras un deploy y cambiar la contraseña es solo editar la variable.
+if (process.env.ADMIN_USERNAME && process.env.ADMIN_PASSWORD) {
+  const hash = bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10);
+  db.upsertAdmin(process.env.ADMIN_USERNAME, hash);
+  console.log(`Admin "${process.env.ADMIN_USERNAME}" asegurado.`);
+} else {
+  console.warn('ADMIN_USERNAME/ADMIN_PASSWORD no definidos: el panel de admin no tendrá usuario.');
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;

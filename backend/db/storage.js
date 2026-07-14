@@ -1,10 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, 'benia.json');
+// Directorio de datos. En producción se apunta a un volumen persistente
+// (DATA_DIR=/app/data) para que los leads y el admin sobrevivan a los
+// redeploys; en local cae a esta misma carpeta.
+const DATA_DIR = process.env.DATA_DIR || __dirname;
+const DB_PATH = path.join(DATA_DIR, 'benia.json');
 
 function load() {
   if (!fs.existsSync(DB_PATH)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
     const initial = { leads: [], admins: [], nextLeadId: 1, nextAdminId: 1 };
     fs.writeFileSync(DB_PATH, JSON.stringify(initial, null, 2));
     return initial;

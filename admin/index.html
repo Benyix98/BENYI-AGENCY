@@ -168,6 +168,17 @@
   let allLeads = [];
   let activeFilter = 'all';
 
+  // Escapa HTML para evitar XSS almacenado: los leads vienen del formulario
+  // público y NO son de confianza. Nunca insertar sus campos sin pasar por aquí.
+  function esc(v) {
+    return String(v == null ? '' : v)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   if (token) showDashboard();
 
   document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -247,11 +258,11 @@
 
     tbody.innerHTML = filtered.map(lead => `
       <tr>
-        <td>${lead.id}</td>
-        <td><strong>${lead.company}</strong></td>
-        <td><a href="mailto:${lead.email}" style="color:#22c55e">${lead.email}</a></td>
-        <td><div class="goal-text">${lead.goal}</div></td>
-        <td><span class="badge ${lead.status}">${lead.status}</span></td>
+        <td>${esc(lead.id)}</td>
+        <td><strong>${esc(lead.company)}</strong></td>
+        <td><a href="mailto:${encodeURIComponent(lead.email)}" style="color:#22c55e">${esc(lead.email)}</a></td>
+        <td><div class="goal-text">${esc(lead.goal)}</div></td>
+        <td><span class="badge ${esc(lead.status)}">${esc(lead.status)}</span></td>
         <td><div class="date-text">${new Date(lead.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' })}</div></td>
         <td>
           <div class="actions">

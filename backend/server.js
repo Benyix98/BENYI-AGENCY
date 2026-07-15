@@ -24,6 +24,10 @@ if (process.env.ADMIN_USERNAME && process.env.ADMIN_PASSWORD) {
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Detrás del proxy de EasyPanel (Traefik): confía en 1 salto para que el
+// rate limiting lea la IP real del cliente (X-Forwarded-For) y no la del proxy.
+app.set('trust proxy', 1);
+
 app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
 app.use(express.json());
 

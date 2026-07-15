@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
 const bcrypt = require('bcryptjs');
 
 const db = require('./db/storage');
@@ -28,8 +29,23 @@ const PORT = process.env.PORT || 3000;
 // rate limiting lea la IP real del cliente (X-Forwarded-For) y no la del proxy.
 app.set('trust proxy', 1);
 
+// Cabeceras de seguridad (HSTS, X-Frame-Options anti-clickjacking,
+// X-Content-Type-Options, oculta X-Powered-By...). CSP desactivada por ahora
+// porque el frontend carga Google Fonts/Calendly y usa scripts inline; una
+// CSP estricta los rompería sin una configuración a medida.
+app.use(helmet({ contentSecurityPolicy: false }));
+
 app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
 app.use(express.json());
+
+// El servidor sirve el frontend Y el backend viven en el mismo árbol (/app).
+// Bloquea el acceso público al código de servidor y a ficheros de config: son
+// del backend, no assets del frontend, y exponerlos revela lógica y versiones.
+app.use((req, res, next) => {
+  const blocked = /^\/(backend(\/|$)|functions(\/|$)|contact-worker(\/|$)|docs(\/|$)|\.git|Dockerfile$|\.dockerignore$|\.gitignore$|server\.ps1$|skills-lock\.json$)/i;
+  if (blocked.test(req.path)) return res.status(404).send('Not found');
+  next();
+});
 
 // Servir frontend estático
 app.use(express.static(path.join(__dirname, '..')));

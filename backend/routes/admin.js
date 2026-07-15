@@ -1,11 +1,24 @@
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../db/storage');
 const auth = require('../middleware/auth');
 
-router.post('/login', (req, res) => {
+// Frena la fuerza bruta contra el login: máx. 10 intentos fallidos cada 15 min
+// por IP. Los logins correctos no cuentan, así que el admin legítimo no se
+// autobloquea.
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos, inténtalo de nuevo en unos minutos.' },
+});
+
+router.post('/login', loginLimiter, (req, res) => {
   const { username, password } = req.body;
 
   const admin = db.getAdmin(username);

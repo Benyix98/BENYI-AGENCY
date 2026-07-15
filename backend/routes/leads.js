@@ -1,7 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 const nodemailer = require('nodemailer');
 const db = require('../db/storage');
+
+// Anti-spam: un negocio no recibe muchos leads legítimos desde la misma IP en
+// poco tiempo. Máx. 8 envíos por hora por IP.
+const leadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados envíos, inténtalo de nuevo más tarde.' },
+});
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -24,7 +35,14 @@ function esc(v) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-router.post('/', async (req, res) => {
+router.post('/', leadLimiter, async (req, res) => {
+  // Honeypot: campo señuelo que un humano nunca rellena (oculto en el form).
+  // Si llega con valor es un bot; respondemos "ok" sin guardar ni avisar para
+  // no darle pistas de que lo hemos detectado.
+  if (req.body.website) {
+    return res.json({ ok: true });
+  }
+
   let { company, email, goal } = req.body;
 
   if (typeof company !== 'string' || typeof email !== 'string' || typeof goal !== 'string') {

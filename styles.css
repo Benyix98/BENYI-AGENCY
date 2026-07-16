@@ -2987,11 +2987,8 @@ h4 {
 }
 
 .cases-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 340px));
-    justify-content: center;
-    gap: 1.75rem;
-    margin-top: 3rem;
+    max-width: 680px;
+    margin: 3rem auto 0;
 }
 
 .case-link-wrapper {
@@ -3001,7 +2998,7 @@ h4 {
 }
 
 .case-card.bento-shell {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 16 / 9;
     cursor: pointer;
 }
 
@@ -3048,21 +3045,6 @@ h4 {
     white-space: nowrap;
 }
 
-.live-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--primary-500);
-    box-shadow: 0 0 6px var(--primary-500);
-    flex-shrink: 0;
-    animation: pulse-live-dot 1.8s ease-in-out infinite;
-}
-
-@keyframes pulse-live-dot {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.35; }
-}
-
 .preview-viewport {
     position: relative;
     flex: 1;
@@ -3070,17 +3052,37 @@ h4 {
     overflow: hidden;
 }
 
-.preview-viewport iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 390px;
-    height: 844px;
-    border: 0;
+.preview-viewport video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
     pointer-events: none;
-    transform-origin: top left;
 }
 
-@media (max-width: 480px) {
-    .cases-grid { grid-template-columns: minmax(0, 320px); }
+/* Rótulo "Ver caso →" que aparece solo al pasar el ratón sobre la tarjeta */
+.case-hover-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 2rem 1rem 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    color: var(--primary-500);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s cubic-bezier(0.32, 0.72, 0, 1), transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    pointer-events: none;
+}
+
+.case-link-wrapper:hover .case-hover-label {
+    opacity: 1;
+    transform: translateY(0);
 }

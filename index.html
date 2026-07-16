@@ -273,13 +273,17 @@
                                 <div class="chrome-bar">
                                     <div class="chrome-dots"><span></span><span></span><span></span></div>
                                     <div class="chrome-url">tefmultiservicios.com</div>
-                                    <div class="live-dot" title="En vivo"></div>
                                 </div>
-                                <div class="preview-viewport" id="tefPreviewViewport">
-                                    <iframe id="tefPreviewFrame"
-                                        src="https://tef-web-tef.lodgoa.easypanel.host/?showcase=1"
-                                        title="Preview en vivo de la web de TEF" loading="lazy"
-                                        tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+                                <div class="preview-viewport">
+                                    <video class="case-video" src="videos/tef-showcase.mp4"
+                                        autoplay loop muted playsinline preload="metadata"
+                                        aria-label="Recorrido por la web de TEF"></video>
+                                    <div class="case-hover-label">
+                                        <span>Ver caso</span>
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+                                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                         </div>

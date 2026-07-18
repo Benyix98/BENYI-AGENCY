@@ -505,6 +505,9 @@
                             <textarea id="goal" name="goal" rows="4" placeholder="Cuéntanos tus objetivos y desafíos..."
                                 required></textarea>
                         </div>
+                        <!-- Honeypot anti-bots: campo señuelo oculto; un humano nunca lo rellena. Si llega con valor, el backend descarta el envío. -->
+                        <input type="text" name="website" id="hp-website" autocomplete="off" tabindex="-1" aria-hidden="true"
+                            style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0; pointer-events:none;">
                         <div class="form-actions text-center">
                             <button type="submit" id="form-submit-btn" class="btn-primary btn-large glow-pulse">Enviar Propuesta y Empezar</button>
                         </div>
@@ -515,39 +518,6 @@
                             ❌ Ha ocurrido un error. Inténtalo de nuevo.
                         </div>
                     </form>
-
-                    <script>
-                      document.getElementById('contact-form').addEventListener('submit', async function(e) {
-                        e.preventDefault();
-                        const btn = document.getElementById('form-submit-btn');
-                        const success = document.getElementById('form-success');
-                        const error = document.getElementById('form-error');
-                        btn.disabled = true;
-                        btn.textContent = 'Enviando...';
-                        success.style.display = 'none';
-                        error.style.display = 'none';
-                        try {
-                          const res = await fetch('/api/leads', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              company: document.getElementById('company').value,
-                              email: document.getElementById('email').value,
-                              goal: document.getElementById('goal').value,
-                            }),
-                          });
-                          if (res.ok) {
-                            this.reset();
-                            success.style.display = 'block';
-                          } else { throw new Error(); }
-                        } catch {
-                          error.style.display = 'block';
-                        } finally {
-                          btn.disabled = false;
-                          btn.textContent = 'Enviar Propuesta y Empezar';
-                        }
-                      });
-                    </script>
                 </div>
             </div>
         </section>

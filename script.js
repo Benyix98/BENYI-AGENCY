@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 company: contactForm.querySelector('#company').value,
                 email: contactForm.querySelector('#email').value,
                 goal: contactForm.querySelector('#goal').value,
+                website: contactForm.querySelector('#hp-website')?.value || '',
             };
 
             try {

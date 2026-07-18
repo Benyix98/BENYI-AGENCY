@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
+    setTimeout(() => navbar.classList.add('reveal-active'), 100);
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -52,18 +53,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // Contact Form Handling
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Enviando...';
             submitBtn.disabled = true;
-            setTimeout(() => {
-                alert('¡Gracias! Hemos recibido tu propuesta. Nos pondremos en contacto contigo pronto.');
-                contactForm.reset();
+
+            const body = {
+                company: contactForm.querySelector('#company').value,
+                email: contactForm.querySelector('#email').value,
+                goal: contactForm.querySelector('#goal').value,
+            };
+
+            try {
+                const res = await fetch('/api/leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body),
+                });
+
+                if (res.ok) {
+                    contactForm.innerHTML = `
+                        <div style="text-align:center; padding: 2rem;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                            <h3 style="color: #22C55E; font-size: 1.5rem; margin-bottom: 0.5rem;">¡Mensaje enviado!</h3>
+                            <p style="color: #9ca3af;">Hemos recibido tu propuesta. Nos pondremos en contacto contigo muy pronto.</p>
+                        </div>
+                    `;
+                } else {
+                    throw new Error('Error del servidor');
+                }
+            } catch (err) {
+                alert('Hubo un error al enviar el mensaje. Por favor inténtalo de nuevo.');
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }, 1500);
+            }
         });
     }
 

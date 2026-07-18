@@ -35,7 +35,7 @@
                 <a href="#servicios" class="nav-link">Servicios</a>
                 <a href="#casos" class="nav-link">Casos</a>
                 <a href="#guia-ia" class="nav-link">Guía IA</a>
-                <a href="#about" class="nav-link">Sobre Mí</a>
+                <a href="#about" class="nav-link">Nosotros</a>
                 <a href="#contacto" class="nav-link nav-btn mobile-only-btn">Contacto</a>
             </div>
             <div class="nav-right">
@@ -506,10 +506,48 @@
                                 required></textarea>
                         </div>
                         <div class="form-actions text-center">
-                            <button type="submit" class="btn-primary btn-large glow-pulse">Enviar Propuesta y
-                                Empezar</button>
+                            <button type="submit" id="form-submit-btn" class="btn-primary btn-large glow-pulse">Enviar Propuesta y Empezar</button>
+                        </div>
+                        <div id="form-success" style="display:none; text-align:center; color:#22c55e; margin-top:1rem; font-weight:600;">
+                            ✅ ¡Mensaje recibido! Te contactaremos pronto.
+                        </div>
+                        <div id="form-error" style="display:none; text-align:center; color:#f87171; margin-top:1rem;">
+                            ❌ Ha ocurrido un error. Inténtalo de nuevo.
                         </div>
                     </form>
+
+                    <script>
+                      document.getElementById('contact-form').addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const btn = document.getElementById('form-submit-btn');
+                        const success = document.getElementById('form-success');
+                        const error = document.getElementById('form-error');
+                        btn.disabled = true;
+                        btn.textContent = 'Enviando...';
+                        success.style.display = 'none';
+                        error.style.display = 'none';
+                        try {
+                          const res = await fetch('/api/leads', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              company: document.getElementById('company').value,
+                              email: document.getElementById('email').value,
+                              goal: document.getElementById('goal').value,
+                            }),
+                          });
+                          if (res.ok) {
+                            this.reset();
+                            success.style.display = 'block';
+                          } else { throw new Error(); }
+                        } catch {
+                          error.style.display = 'block';
+                        } finally {
+                          btn.disabled = false;
+                          btn.textContent = 'Enviar Propuesta y Empezar';
+                        }
+                      });
+                    </script>
                 </div>
             </div>
         </section>
@@ -539,7 +577,7 @@
             <div class="footer-col">
                 <h4 class="footer-title">Empresa</h4>
                 <ul class="footer-links">
-                    <li><a href="#about">Sobre Mí</a></li>
+                    <li><a href="#about">Nosotros</a></li>
                     <li><a href="#casos">Casos de Éxito</a></li>
                     <li><a href="checkout.html" class="text-primary" style="font-weight: 600;">Contratar Servicio</a></li>
                     <li><a href="habit-tracker.html" style="opacity: 0.8;">Habit Tracker</a></li>

@@ -31,7 +31,11 @@ async function handleStripeEvent({ rawBody, signature, stripe, webhookSecret, db
       stripeRefId: pi.id,
       status: 'paid',
     });
-    await notify({ ...order, serviceName: svc ? svc.name : serviceId });
+    try {
+      await notify({ ...order, serviceName: svc ? svc.name : serviceId });
+    } catch (err) {
+      console.error('notify falló (pedido ya persistido):', err.message);
+    }
     return { received: true, handled: true };
   }
 
@@ -56,7 +60,11 @@ async function handleStripeEvent({ rawBody, signature, stripe, webhookSecret, db
       stripeRefId: invoice.id,
       status: 'paid',
     });
-    await notify({ ...order, serviceName: svc ? svc.name : serviceId });
+    try {
+      await notify({ ...order, serviceName: svc ? svc.name : serviceId });
+    } catch (err) {
+      console.error('notify falló (pedido ya persistido):', err.message);
+    }
     return { received: true, handled: true };
   }
 

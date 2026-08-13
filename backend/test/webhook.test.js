@@ -82,3 +82,16 @@ test('renovación mensual (billing_reason subscription_cycle) no crea pedido', a
   assert.equal(r.handled, false);
   assert.equal(db.getOrders().length, 0);
 });
+
+test('si notify falla, el pedido queda persistido y no propaga', async () => {
+  const event = { id: 'evt_5', type: 'payment_intent.succeeded', data: { object: {
+    id: 'pi_5', invoice: null, amount: 6500, customer: 'cus_5',
+    metadata: { serviceId: 'mentorias-1h', maintenance: 'false' }, receipt_email: null,
+  } } };
+  const stripe = stripeReturning(event);
+  const r = await handleStripeEvent({ rawBody: Buffer.from('{}'), signature: 'x', stripe,
+    webhookSecret: 'whsec', db, notify: async () => { throw new Error('smtp caido'); } });
+  assert.equal(r.handled, true);
+  assert.equal(db.getOrders().length, 1);
+  assert.equal(db.getOrderByStripeRef('pi_5').serviceId, 'mentorias-1h');
+});

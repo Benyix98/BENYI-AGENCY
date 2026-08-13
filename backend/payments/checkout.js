@@ -1,4 +1,4 @@
-const { SERVICES, normalizeMaintenance } = require('../config/services');
+const { SERVICES, getPriceIds, normalizeMaintenance } = require('../config/services');
 const defaultStripe = require('./stripe-client');
 
 // Crea la intención de cobro en Stripe y devuelve el clientSecret para el
@@ -27,11 +27,7 @@ async function createCheckout({ serviceId, maintenance, name, email }, stripe = 
     return { clientSecret: pi.client_secret, amount: svc.baseCents, mode: 'payment' };
   }
 
-  // Leer PRICE_IDS dinámicamente para permitir que los tests establezcan las variables
-  const prices = {
-    base: process.env[`STRIPE_PRICE_${serviceId.toUpperCase()}_BASE`],
-    recurring: process.env[`STRIPE_PRICE_${serviceId.toUpperCase()}_RECURRING`],
-  };
+  const prices = getPriceIds(serviceId);
   const subscription = await stripe.subscriptions.create({
     customer: customer.id,
     items: [{ price: prices.recurring }],

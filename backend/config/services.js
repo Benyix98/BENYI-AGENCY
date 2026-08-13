@@ -9,19 +9,23 @@ const SERVICES = {
   'mentorias-3h':       { name: 'Mentoría Especializada 3h', baseCents: 17000, recurringCents: null },
 };
 
-// IDs de precio de Stripe (creados por scripts/setup-stripe.js). Solo los
-// servicios con cuota necesitan precios en Stripe (para la suscripción); los
-// de pago único usan el importe directo en el PaymentIntent.
-const PRICE_IDS = {
-  'automatizacion': {
-    base: process.env.STRIPE_PRICE_AUTOMATIZACION_BASE,
-    recurring: process.env.STRIPE_PRICE_AUTOMATIZACION_RECURRING,
-  },
-  'landings': {
-    base: process.env.STRIPE_PRICE_LANDINGS_BASE,
-    recurring: process.env.STRIPE_PRICE_LANDINGS_RECURRING,
-  },
-};
+// Lee los price IDs de Stripe en el momento de la llamada (no en la carga del
+// módulo) para que reflejen el entorno actual. Solo los servicios con cuota
+// tienen precios en Stripe (para la suscripción); los de pago único usan el
+// importe directo en el PaymentIntent.
+function getPriceIds(serviceId) {
+  const map = {
+    'automatizacion': {
+      base: process.env.STRIPE_PRICE_AUTOMATIZACION_BASE,
+      recurring: process.env.STRIPE_PRICE_AUTOMATIZACION_RECURRING,
+    },
+    'landings': {
+      base: process.env.STRIPE_PRICE_LANDINGS_BASE,
+      recurring: process.env.STRIPE_PRICE_LANDINGS_RECURRING,
+    },
+  };
+  return map[serviceId] || null;
+}
 
 // El mantenimiento solo aplica si el servicio existe y tiene cuota mensual.
 // Salvaguarda del backend: aunque el frontend no muestre el checkbox para
@@ -32,4 +36,4 @@ function normalizeMaintenance(serviceId, maintenance) {
   return Boolean(maintenance);
 }
 
-module.exports = { SERVICES, PRICE_IDS, normalizeMaintenance };
+module.exports = { SERVICES, getPriceIds, normalizeMaintenance };

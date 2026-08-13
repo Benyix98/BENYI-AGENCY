@@ -10,11 +10,14 @@ const DB_PATH = path.join(DATA_DIR, 'benia.json');
 function load() {
   if (!fs.existsSync(DB_PATH)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
-    const initial = { leads: [], admins: [], nextLeadId: 1, nextAdminId: 1 };
+    const initial = { leads: [], admins: [], orders: [], nextLeadId: 1, nextAdminId: 1, nextOrderId: 1 };
     fs.writeFileSync(DB_PATH, JSON.stringify(initial, null, 2));
     return initial;
   }
-  return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+  const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+  if (!data.orders) data.orders = [];
+  if (!data.nextOrderId) data.nextOrderId = 1;
+  return data;
 }
 
 function save(data) {
@@ -51,6 +54,36 @@ const db = {
     const data = load();
     data.leads = data.leads.filter(l => l.id !== parseInt(id));
     save(data);
+  },
+
+  insertOrder({ serviceId, amount, maintenance, customerName, customerEmail,
+                stripeCustomerId, stripePaymentIntentId, stripeSubscriptionId,
+                stripeRefId, status }) {
+    const data = load();
+    const order = {
+      id: data.nextOrderId++,
+      serviceId, amount, maintenance: Boolean(maintenance),
+      customerName, customerEmail,
+      stripeCustomerId: stripeCustomerId || null,
+      stripePaymentIntentId: stripePaymentIntentId || null,
+      stripeSubscriptionId: stripeSubscriptionId || null,
+      stripeRefId, // referencia única para idempotencia (pi_... o in_...)
+      status: status || 'paid',
+      created_at: new Date().toISOString(),
+    };
+    data.orders.push(order);
+    save(data);
+    return order;
+  },
+
+  getOrderByStripeRef(stripeRefId) {
+    const data = load();
+    return data.orders.find(o => o.stripeRefId === stripeRefId) || null;
+  },
+
+  getOrders() {
+    const data = load();
+    return data.orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   },
 
   getAdmin(username) {

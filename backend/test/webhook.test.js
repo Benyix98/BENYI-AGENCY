@@ -32,8 +32,8 @@ test('payment_intent.succeeded de pago único crea pedido y notifica una vez', a
   const notified = [];
   const event = { id: 'evt_1', type: 'payment_intent.succeeded', data: { object: {
     id: 'pi_1', invoice: null, amount: 6500, customer: 'cus_1',
-    metadata: { serviceId: 'mentorias-1h', maintenance: 'false' },
-    receipt_email: null,
+    metadata: { serviceId: 'mentorias-1h', maintenance: 'false', customerName: 'Ana Uno', customerEmail: 'ana1@x.com' },
+    receipt_email: 'ana1@x.com',
   } } };
   const stripe = stripeReturning(event);
   const args = { rawBody: Buffer.from('{}'), signature: 'x', stripe, webhookSecret: 'whsec', db, notify: async (o) => notified.push(o) };
@@ -42,6 +42,8 @@ test('payment_intent.succeeded de pago único crea pedido y notifica una vez', a
   assert.equal(r1.handled, true);
   assert.equal(db.getOrders().length, 1);
   assert.equal(db.getOrderByStripeRef('pi_1').serviceId, 'mentorias-1h');
+  assert.equal(db.getOrderByStripeRef('pi_1').customerName, 'Ana Uno');
+  assert.equal(db.getOrderByStripeRef('pi_1').customerEmail, 'ana1@x.com');
   assert.equal(notified.length, 1);
 
   // Idempotencia: reprocesar el mismo evento no duplica.

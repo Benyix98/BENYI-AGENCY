@@ -21,8 +21,9 @@ async function createCheckout({ serviceId, maintenance, name, email }, stripe = 
       amount: svc.baseCents,
       currency: 'eur',
       customer: customer.id,
+      receipt_email: email,
       automatic_payment_methods: { enabled: true },
-      metadata: { serviceId, maintenance: 'false' },
+      metadata: { serviceId, maintenance: 'false', customerName: name, customerEmail: email },
     });
     return { clientSecret: pi.client_secret, amount: svc.baseCents, mode: 'payment' };
   }

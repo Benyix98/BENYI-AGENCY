@@ -263,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ serviceId, maintenance, name, email }),
             });
         } catch (err) {
+            console.error('Error al iniciar el pago:', err);
             showPaymentError('No se pudo conectar con el servidor. Inténtalo de nuevo.'); return;
         }
         if (!res.ok) {
@@ -295,6 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: paymentIntent.id,
                 payer: { name: { given_name: name, surname: '' }, email_address: email },
             });
+        } else {
+            showPaymentError('El pago no se completó. Revisa los datos e inténtalo de nuevo.');
         }
     }
 

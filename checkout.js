@@ -3,8 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedServiceName = document.getElementById('selected-service-name');
     const subtotalAmount = document.getElementById('subtotal-amount');
     const totalAmount = document.getElementById('total-amount');
-    const paypalSpinner = document.getElementById('paypal-spinner');
-    
+
     // Elementos de secciones y pasos
     const checkoutPaymentSection = document.getElementById('checkout-payment-section');
     const checkoutSuccessSection = document.getElementById('checkout-success-section');
@@ -40,8 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setupMaintenanceOptinListener();
         
         updateSummaryDisplay();
-        loadPayPalSDK();
-        setupTestPaymentListener();
+        initStripe();
+        setupPaymentButton();
+        serviceSelector.addEventListener('change', resetPaymentElement);
+        const _maintCb = document.getElementById('maintenance-checkbox');
+        if (_maintCb) _maintCb.addEventListener('change', resetPaymentElement);
     }
 
     // --- 1.2. Configurar Checkbox de Opción de Mantenimiento ---
@@ -68,35 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     optinContainer.style.borderColor = 'var(--border-glass)';
                     optinContainer.style.background = 'rgba(255, 255, 255, 0.01)';
                 }
-            });
-        }
-    }
-
-    // --- 1.5. Configurar Botón de Pago de Simulación ---
-    function setupTestPaymentListener() {
-        const testPaymentBtn = document.getElementById('btn-test-payment');
-        if (testPaymentBtn) {
-            testPaymentBtn.addEventListener('click', () => {
-                // Generar mock de detalles idéntico al entregado por PayPal SDK
-                const mockDetails = {
-                    id: 'MOCK-TX-' + Math.floor(100000000 + Math.random() * 900000000),
-                    payer: {
-                        name: {
-                            given_name: 'Usuario',
-                            surname: 'De Prueba 🚀'
-                        },
-                        email_address: 'prueba.benia@agency.com'
-                    }
-                };
-
-                // Efecto visual de procesamiento de pago
-                testPaymentBtn.disabled = true;
-                testPaymentBtn.innerHTML = '⚡ Procesando Simulación...';
-                testPaymentBtn.style.opacity = '0.7';
-
-                setTimeout(() => {
-                    handleSuccessfulPayment(mockDetails);
-                }, 800);
             });
         }
     }
@@ -215,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (scheduleContainer) scheduleContainer.style.display = 'none';
         }
         
-        // Guardar el total calculado final en la variable global para PayPal SDK
+        // Guardar el total calculado final en la variable global para la pasarela de pago
         currentTotalPayable = calculatedTotal;
         
         totalAmount.textContent = `${calculatedTotal.toFixed(2).replace('.', ',')} €`;
@@ -224,75 +197,129 @@ document.addEventListener('DOMContentLoaded', () => {
     // Escuchar cambios en la selección de servicio
     serviceSelector.addEventListener('change', updateSummaryDisplay);
 
-    // --- 3. Cargar Dinámicamente el SDK de PayPal ---
-    function loadPayPalSDK() {
-        const script = document.createElement('script');
-        // Usamos client-id=sandbox y currency=EUR para pasarela en Euros.
-        script.src = "https://www.paypal.com/sdk/js?client-id=sandbox&currency=EUR&components=buttons";
-        script.async = true;
-        
-        script.onload = () => {
-            // Eliminar spinner de carga e inicializar botones
-            if (paypalSpinner) paypalSpinner.remove();
-            initializePayPalButtons();
-        };
+    // --- Stripe Payment Element ---
+    let stripe = null;
+    let elements = null;
+    let paymentMounted = false;
+    const CHECKOUT_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        script.onerror = () => {
-            console.error('Error cargando el SDK de PayPal.');
-            paypalSpinner.innerHTML = `
-                <div style="color: #EF4444; text-align: center;">
-                    <span style="font-size: 2rem;">⚠️</span>
-                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">No se pudo cargar la pasarela de pago. Por favor, recarga la página o inténtalo más tarde.</p>
-                </div>
-            `;
-        };
-
-        document.head.appendChild(script);
+    async function initStripe() {
+        try {
+            const resp = await fetch('/api/checkout/config');
+            const { publishableKey } = await resp.json();
+            if (publishableKey && typeof Stripe !== 'undefined') {
+                stripe = Stripe(publishableKey);
+            } else {
+                console.error('Stripe no disponible (sin publishableKey o SDK no cargado).');
+            }
+        } catch (err) {
+            console.error('No se pudo inicializar Stripe:', err);
+        }
     }
 
-    // --- 4. Inicializar PayPal Smart Buttons ---
-    function initializePayPalButtons() {
-        if (typeof paypal === 'undefined') return;
+    function showPaymentError(msg) {
+        const box = document.getElementById('payment-error');
+        if (box) box.textContent = msg || '';
+    }
 
-        paypal.Buttons({
-            style: {
-                layout: 'vertical',
-                color: 'black',
-                shape: 'rect',
-                label: 'pay'
-            },
-            createOrder: function(data, actions) {
-                // Obtener el precio y nombre actuales en tiempo de clic
-                const selectedOption = serviceSelector.options[serviceSelector.selectedIndex];
-                const name = selectedOption.getAttribute('data-name');
-                const optinCheckbox = document.getElementById('maintenance-checkbox');
-                const includeMaint = optinCheckbox && optinCheckbox.checked && (serviceSelector.value === 'automatizacion' || serviceSelector.value === 'landings');
-                
-                const purchaseDesc = includeMaint 
-                    ? `BENIA AGENCY - ${name} (Instalación + 1er Mes de Mantenimiento)` 
-                    : `BENIA AGENCY - ${name}`;
+    // maintenance cuenta solo si su fila está visible (servicio con cuota) y el checkbox está marcado.
+    function readSelection() {
+        const serviceId = serviceSelector.value;
+        const cb = document.getElementById('maintenance-checkbox');
+        const row = document.getElementById('maintenance-row');
+        const maintenanceApplies = !!(row && row.style.display !== 'none');
+        const maintenance = !!(cb && cb.checked && maintenanceApplies);
+        return { serviceId, maintenance };
+    }
 
-                return actions.order.create({
-                    purchase_units: [{
-                        description: purchaseDesc,
-                        amount: {
-                            currency_code: 'EUR',
-                            value: currentTotalPayable.toFixed(2)
-                        }
-                    }]
-                });
-            },
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    // Procesar la transacción completada con éxito
-                    handleSuccessfulPayment(details);
-                });
-            },
-            onError: function(err) {
-                console.error('PayPal Smart Buttons Error:', err);
-                alert('No se pudo completar la transacción. Por favor, verifica tus datos de pago e inténtalo de nuevo.');
+    // Si cambia servicio o mantenimiento, el importe cambia y el clientSecret
+    // anterior queda obsoleto: desmontamos el Payment Element y volvemos al paso 1.
+    function resetPaymentElement() {
+        if (!paymentMounted) return;
+        const container = document.getElementById('payment-element');
+        if (container) container.innerHTML = '';
+        elements = null;
+        paymentMounted = false;
+        const txt = document.getElementById('pay-button-text');
+        if (txt) txt.textContent = 'Continuar al pago';
+        showPaymentError('');
+    }
+
+    // Paso 1: valida datos, pide el clientSecret al backend y monta el Payment Element.
+    async function startPayment() {
+        showPaymentError('');
+        const name = document.getElementById('buyer-name').value.trim();
+        const email = document.getElementById('buyer-email').value.trim();
+        if (!name || !email) { showPaymentError('Introduce tu nombre y tu email.'); return; }
+        if (!CHECKOUT_EMAIL_RE.test(email)) { showPaymentError('El email no es válido.'); return; }
+        if (!stripe) { showPaymentError('El sistema de pago no está disponible. Recarga la página.'); return; }
+
+        const { serviceId, maintenance } = readSelection();
+        let res;
+        try {
+            res = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ serviceId, maintenance, name, email }),
+            });
+        } catch (err) {
+            console.error('Error al iniciar el pago:', err);
+            showPaymentError('No se pudo conectar con el servidor. Inténtalo de nuevo.'); return;
+        }
+        if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            showPaymentError(data.error || 'No se pudo iniciar el pago.'); return;
+        }
+        const { clientSecret } = await res.json();
+        elements = stripe.elements({ clientSecret, appearance: { theme: 'night' } });
+        const paymentElement = elements.create('payment');
+        paymentElement.mount('#payment-element');
+        paymentMounted = true;
+        const txt = document.getElementById('pay-button-text');
+        if (txt) txt.textContent = 'Pagar ahora';
+    }
+
+    // Paso 2: confirma el pago sin salir de la página; en éxito reutiliza el
+    // flujo de éxito existente (transición + confetti + Calendly prerelleno).
+    async function confirmPayment() {
+        const name = document.getElementById('buyer-name').value.trim();
+        const email = document.getElementById('buyer-email').value.trim();
+        const { error, paymentIntent } = await stripe.confirmPayment({
+            elements,
+            redirect: 'if_required',
+        });
+        if (error) {
+            showPaymentError(error.message || 'El pago no se pudo completar.'); return;
+        }
+        if (paymentIntent && (paymentIntent.status === 'succeeded' || paymentIntent.status === 'processing')) {
+            handleSuccessfulPayment({
+                id: paymentIntent.id,
+                payer: { name: { given_name: name, surname: '' }, email_address: email },
+            });
+        } else {
+            showPaymentError('El pago no se completó. Revisa los datos e inténtalo de nuevo.');
+        }
+    }
+
+    function setupPaymentButton() {
+        const btn = document.getElementById('submit-payment');
+        if (!btn) return;
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const txt = document.getElementById('pay-button-text');
+            const spin = document.getElementById('pay-spinner');
+            btn.disabled = true;
+            if (txt) txt.style.display = 'none';
+            if (spin) spin.style.display = 'inline';
+            try {
+                if (!paymentMounted) { await startPayment(); }
+                else { await confirmPayment(); }
+            } finally {
+                btn.disabled = false;
+                if (txt) txt.style.display = 'inline';
+                if (spin) spin.style.display = 'none';
             }
-        }).render('#paypal-button-container');
+        });
     }
 
     // --- 5. URL de Calendly de Destino ---
@@ -302,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 6. Manejo de Pago Exitoso, Transiciones y Calendly ---
     function handleSuccessfulPayment(details) {
-        // 1. Extraer datos del comprador entregados por PayPal
+        // 1. Extraer datos del comprador entregados por Stripe
         const payerGivenName = details.payer.name.given_name || '';
         const payerSurname = details.payer.name.surname || '';
         const buyerName = `${payerGivenName} ${payerSurname}`.trim();
@@ -397,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     email: email
                 },
                 utm: {
-                    utmSource: 'PayPalCheckout',
+                    utmSource: 'StripeCheckout',
                     utmMedium: 'AutoEmbed',
                     utmCampaign: 'FirstMeeting'
                 }

@@ -3050,8 +3050,17 @@ h4 {
 }
 
 .cases-grid {
-    max-width: 680px;
+    max-width: 980px;
     margin: 3rem auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+@media (max-width: 520px) {
+    .cases-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .case-link-wrapper {

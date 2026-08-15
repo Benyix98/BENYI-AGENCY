@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caso de Éxito: OptixLab — Web de servicios con sistema de reservas | BENIA AGENCY</title>
+    <meta name="description"
+        content="Cómo construimos la web de servicios y el motor de reservas propio (disponibilidad, huecos y anti-solapamiento) para OptixLab, servicio de optimización de PC y audio para gamers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="dark-mode" style="overflow-y: auto !important;">
+    <div id="particles-container"></div>
+    <div class="glow-ambient"></div>
+    <div class="glow-ambient-left"></div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo-link">
+                    <img src="images/logo.png" alt="BENIA Logo" class="nav-logo">
+                </a>
+                <div class="nav-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYS_ONLINE // CASO_OPTIXLAB</span>
+                </div>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="index.html#casos" class="nav-link active">Casos</a>
+                <a href="index.html#contacto" class="nav-link nav-btn">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="subpage-container">
+        <header class="subpage-header">
+            <div class="breadcrumbs">
+                <a href="index.html">Inicio</a>
+                <span class="breadcrumb-separator">//</span>
+                <a href="index.html#casos">Casos</a>
+                <span class="breadcrumb-separator">//</span>
+                <span class="breadcrumb-current">OptixLab</span>
+            </div>
+            <h1 class="subpage-title">OptixLab — web de servicios con <span class="gradient-text">sistema de reservas propio</span></h1>
+            <p class="subpage-intro">Optimización de PC y audio para gamers. OptixLab mejora el rendimiento de los equipos y la calidad de audio en juegos, con un catálogo de packs y reserva de cita online. El proyecto necesitaba una web que vendiera los servicios y una forma fiable de agendar citas sin gestionar la disponibilidad a mano.</p>
+        </header>
+
+        <article class="subpage-content">
+            <h2>El reto</h2>
+            <p>OptixLab ofrece varios servicios (packs de optimización de rendimiento, asesoría de hardware y mejora de audio), pero necesitaba un sitio donde el cliente pudiera ver los packs con sus precios, elegir un hueco libre y reservar su cita sin llamadas ni mensajes cruzados, y sin el riesgo de que dos clientes cogieran la misma franja.</p>
+
+            <h2>Qué se construyó</h2>
+            <p>El proyecto combina una web de servicios con un backend de reservas hecho a medida:</p>
+
+            <div class="interactive-card">
+                <h3>🖥️ Web de servicios</h3>
+                <p>Catálogo con los packs (Boost Starter, Boost Pro, Boost Extremo, Asesoría de Hardware y Mejora de Audio), con precios, descripciones y guías técnicas de componentes y periféricos.</p>
+            </div>
+
+            <div class="interactive-card">
+                <h3>📅 Motor de reservas propio</h3>
+                <p>Sistema que calcula los huecos libres en tramos de 30 minutos según las reglas de disponibilidad, y crea cada reserva dentro de una transacción con protección anti-solapamiento: dos clientes no pueden reservar la misma franja.</p>
+            </div>
+
+            <div class="interactive-card">
+                <h3>💳 Checkout y expiración automática</h3>
+                <p>Flujo de reserva con caducidad automática de las citas no confirmadas (para no bloquear huecos), preparado para conectar la pasarela de pago.</p>
+            </div>
+
+            <h2>Stack</h2>
+            <p>Web estática (HTML/CSS/JS) + backend Node.js/Express con PostgreSQL, motor de disponibilidad propio y una suite de tests automatizados que cubre la lógica de huecos, las reservas y la concurrencia.</p>
+
+            <h2>Estado actual</h2>
+            <p>El backend de reservas está construido y probado (tests en verde, incluida la protección frente a reservas simultáneas). Queda pendiente el despliegue final y la conexión de la pasarela de pago para pasar a producción completa.</p>
+
+            <div class="back-btn-wrapper" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <a href="index.html#casos" class="btn-secondary">
+                    <span>← Ver más casos</span>
+                </a>
+                <a href="index.html#contacto" class="btn-primary">
+                    <span>¿Quieres algo similar? Hablemos</span>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer style="padding: 4rem 0; border-top: 1px solid var(--border-glass); margin-top: 5rem; text-align: center; font-size: 0.9rem; color: var(--text-tertiary);">
+        <p>&copy; 2026 BENIA AGENCY. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const particlesContainer = document.getElementById('particles-container');
+            if (particlesContainer) {
+                const particleCount = 25;
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    const size = Math.random() * 4 + 1;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 20 + 's';
+                    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

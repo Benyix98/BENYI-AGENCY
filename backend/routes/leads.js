@@ -66,6 +66,16 @@ router.post('/', leadLimiter, async (req, res) => {
   try {
     const lead = db.insertLead(company, email, goal);
 
+    // Reenvía el lead al workflow de n8n (best-effort: si falla, se registra y
+    // ya está; nunca rompe la respuesta al usuario ni el guardado del lead).
+    if (process.env.N8N_WEBHOOK_URL) {
+      fetch(process.env.N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ company, email, goal, created_at: lead.created_at }),
+      }).catch(err => console.error('No se pudo notificar a n8n:', err.message));
+    }
+
     transporter.sendMail({
       from: `"Benia Agency" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,

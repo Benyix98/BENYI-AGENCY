@@ -1877,7 +1877,7 @@ h4 {
     }
 
     .nav-link {
-        font-size: 0.62rem;
+        font-size: 0.78rem;
         font-weight: 500;
         padding: 0.2rem 0.25rem;
         white-space: nowrap;
@@ -1889,7 +1889,7 @@ h4 {
     }
 
     .nav-btn {
-        font-size: 0.62rem;
+        font-size: 0.78rem;
         padding: 0.3rem 0.5rem !important;
     }
 
@@ -3188,7 +3188,7 @@ h4 {
     }
 
     .nav-link {
-        font-size: 0.56rem;
+        font-size: 0.68rem;
         padding: 0.2rem 0.18rem;
     }
 }

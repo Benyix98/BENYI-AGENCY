@@ -35,6 +35,14 @@ function esc(v) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Teléfono: al escribirlo se aceptan espacios, guiones, puntos y paréntesis,
+// pero se guarda normalizado (solo dígitos y "+" inicial) para poder llamar
+// o usarlo directamente en n8n. 9-15 dígitos cubre España e internacional (E.164).
+const PHONE_RE = /^\+?\d{9,15}$/;
+function normalizePhone(v) {
+  return v.replace(/[\s\-.()]/g, '');
+}
+
 router.post('/', leadLimiter, async (req, res) => {
   // Honeypot: campo señuelo que un humano nunca rellena (oculto en el form).
   // Si llega con valor es un bot; respondemos "ok" sin guardar ni avisar para
@@ -43,17 +51,19 @@ router.post('/', leadLimiter, async (req, res) => {
     return res.json({ ok: true });
   }
 
-  let { company, email, goal } = req.body;
+  let { company, email, phone, goal } = req.body;
 
-  if (typeof company !== 'string' || typeof email !== 'string' || typeof goal !== 'string') {
+  if (typeof company !== 'string' || typeof email !== 'string' ||
+      typeof phone !== 'string' || typeof goal !== 'string') {
     return res.status(400).json({ error: 'Datos inválidos' });
   }
 
   company = company.trim();
   email = email.trim();
+  phone = normalizePhone(phone.trim());
   goal = goal.trim();
 
-  if (!company || !email || !goal) {
+  if (!company || !email || !phone || !goal) {
     return res.status(400).json({ error: 'Todos los campos son obligatorios' });
   }
   if (company.length > 200 || email.length > 200 || goal.length > 5000) {
@@ -62,9 +72,16 @@ router.post('/', leadLimiter, async (req, res) => {
   if (!EMAIL_RE.test(email)) {
     return res.status(400).json({ error: 'Email no válido' });
   }
+  if (!PHONE_RE.test(phone)) {
+    return res.status(400).json({ error: 'Teléfono no válido' });
+  }
+  // RGPD: sin aceptación expresa de la política de privacidad no se guarda nada.
+  if (req.body.privacy !== true) {
+    return res.status(400).json({ error: 'Debes aceptar la política de privacidad' });
+  }
 
   try {
-    const lead = db.insertLead(company, email, goal);
+    const lead = db.insertLead(company, email, phone, goal);
 
     // Reenvía el lead al workflow de n8n (best-effort: si falla, se registra y
     // ya está; nunca rompe la respuesta al usuario ni el guardado del lead).
@@ -72,7 +89,7 @@ router.post('/', leadLimiter, async (req, res) => {
       fetch(process.env.N8N_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ company, email, goal, created_at: lead.created_at }),
+        body: JSON.stringify({ company, email, phone, goal, created_at: lead.created_at }),
       }).catch(err => console.error('No se pudo notificar a n8n:', err.message));
     }
 
@@ -84,6 +101,7 @@ router.post('/', leadLimiter, async (req, res) => {
         <h2>Nuevo lead recibido</h2>
         <p><strong>Empresa:</strong> ${esc(company)}</p>
         <p><strong>Email:</strong> ${esc(email)}</p>
+        <p><strong>Teléfono:</strong> <a href="tel:${esc(phone)}">${esc(phone)}</a></p>
         <p><strong>Objetivo:</strong> ${esc(goal)}</p>
       `,
     }).catch(err => console.error('Email no enviado:', err.message));

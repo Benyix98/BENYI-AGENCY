@@ -151,6 +151,7 @@
           <th>#</th>
           <th>Empresa</th>
           <th>Email</th>
+          <th>Teléfono</th>
           <th>Objetivo</th>
           <th>Estado</th>
           <th>Fecha</th>
@@ -252,7 +253,7 @@
     const tbody = document.getElementById('leads-table');
 
     if (!filtered.length) {
-      tbody.innerHTML = '<tr><td colspan="7" class="empty">No hay leads en esta categoría</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="empty">No hay leads en esta categoría</td></tr>';
       return;
     }
 
@@ -261,6 +262,7 @@
         <td>${esc(lead.id)}</td>
         <td><strong>${esc(lead.company)}</strong></td>
         <td><a href="mailto:${encodeURIComponent(lead.email)}" style="color:#22c55e">${esc(lead.email)}</a></td>
+        <td>${lead.phone ? `<a href="tel:${esc(lead.phone)}" style="color:#22c55e">${esc(lead.phone)}</a>` : '<span style="color:#666">—</span>'}</td>
         <td><div class="goal-text">${esc(lead.goal)}</div></td>
         <td><span class="badge ${esc(lead.status)}">${esc(lead.status)}</span></td>
         <td><div class="date-text">${new Date(lead.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' })}</div></td>

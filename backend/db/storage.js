@@ -25,13 +25,17 @@ function save(data) {
 }
 
 const db = {
-  insertLead(company, email, goal) {
+  insertLead(company, email, phone, goal) {
     const data = load();
+    const now = new Date().toISOString();
     const lead = {
       id: data.nextLeadId++,
-      company, email, goal,
+      company, email, phone, goal,
       status: 'pendiente',
-      created_at: new Date().toISOString(),
+      created_at: now,
+      // Solo se llega aquí tras validar la casilla de privacidad en la ruta;
+      // guardar cuándo se aceptó sirve como prueba del consentimiento (RGPD art. 7.1).
+      privacy_accepted_at: now,
     };
     data.leads.push(lead);
     save(data);

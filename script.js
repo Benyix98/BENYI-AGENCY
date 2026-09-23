@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const body = {
                 company: contactForm.querySelector('#company').value,
                 email: contactForm.querySelector('#email').value,
+                phone: contactForm.querySelector('#phone').value,
                 goal: contactForm.querySelector('#goal').value,
+                privacy: contactForm.querySelector('#privacy').checked,
                 website: contactForm.querySelector('#hp-website')?.value || '',
             };
 
@@ -83,10 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                 } else {
-                    throw new Error('Error del servidor');
+                    // El backend devuelve { error } con el motivo (ej. "Teléfono no válido").
+                    const data = await res.json().catch(() => ({}));
+                    const serverErr = new Error(data.error || '');
+                    serverErr.fromServer = true;
+                    throw serverErr;
                 }
             } catch (err) {
-                alert('Hubo un error al enviar el mensaje. Por favor inténtalo de nuevo.');
+                const detail = err.fromServer && err.message ? `\n\nMotivo: ${err.message}` : '';
+                alert(`Hubo un error al enviar el mensaje. Por favor inténtalo de nuevo.${detail}`);
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }

@@ -24,6 +24,12 @@ function save(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 }
 
+// Convierte un id recibido por URL en número. Solo acepta enteros ("16"):
+// parseInt daría por bueno "1a0ce7e9" como 1 y se tocaría un lead ajeno.
+function toId(id) {
+  return /^\d+$/.test(String(id)) ? Number(id) : NaN;
+}
+
 const db = {
   insertLead(company, email, phone, goal) {
     const data = load();
@@ -49,7 +55,7 @@ const db = {
   // motivo). Devuelve el lead actualizado, o null si no existe.
   updateLeadClassification(id, fields) {
     const data = load();
-    const lead = data.leads.find(l => l.id === parseInt(id));
+    const lead = data.leads.find(l => l.id === toId(id));
     if (!lead) return null;
     for (const key of ['clasificacion', 'servicio', 'necesidad', 'motivo']) {
       if (key in fields) lead[key] = fields[key];
@@ -66,14 +72,14 @@ const db = {
 
   updateLeadStatus(id, status) {
     const data = load();
-    const lead = data.leads.find(l => l.id === parseInt(id));
+    const lead = data.leads.find(l => l.id === toId(id));
     if (lead) lead.status = status;
     save(data);
   },
 
   deleteLead(id) {
     const data = load();
-    data.leads = data.leads.filter(l => l.id !== parseInt(id));
+    data.leads = data.leads.filter(l => l.id !== toId(id));
     save(data);
   },
 

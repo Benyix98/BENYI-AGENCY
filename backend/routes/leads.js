@@ -158,7 +158,11 @@ router.post('/:id/clasificacion', callbackLimiter, (req, res) => {
   if (motivo !== undefined) fields.motivo = motivo;
 
   const lead = db.updateLeadClassification(req.params.id, fields);
-  if (!lead) return res.status(404).json({ error: 'Lead no encontrado' });
+  // Se devuelve el id recibido para poder diagnosticar desde n8n (p. ej. "undefined"
+  // si la expresión de la URL no encontró el campo). Quien llega aquí ya pasó el secreto.
+  if (!lead) {
+    return res.status(404).json({ error: 'Lead no encontrado', id_recibido: String(req.params.id).slice(0, 60) });
+  }
   res.json({ ok: true, id: lead.id, clasificacion: lead.clasificacion });
 });
 

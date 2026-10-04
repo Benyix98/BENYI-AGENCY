@@ -107,10 +107,26 @@ test('clasificación no válida → 400', async () => {
   assert.equal(res.status, 400);
 });
 
-test('lead inexistente → 404', async () => {
+test('lead inexistente → 404, indicando el id recibido para poder diagnosticarlo', async () => {
   const res = await request(app).post('/api/leads/999/clasificacion')
     .set('x-benia-secret', SECRET).send({ clasificacion: 'frio' });
   assert.equal(res.status, 404);
+  assert.equal(res.body.id_recibido, '999');
+
+  const sinId = await request(app).post('/api/leads/undefined/clasificacion')
+    .set('x-benia-secret', SECRET).send({ clasificacion: 'frio' });
+  assert.equal(sinId.body.id_recibido, 'undefined');
+});
+
+test('un id que no es un número entero → 404 y no toca ningún lead (aunque empiece por un dígito)', async () => {
+  const lead = nuevoLead(); // id 1
+  // "1a0ce7e9" es el aspecto de un id de Gmail; parseInt lo leería como 1.
+  for (const id of ['1a0ce7e9', 'undefined', '1.5', '%7B%7Bid%7D%7D']) {
+    const res = await request(app).post(`/api/leads/${id}/clasificacion`)
+      .set('x-benia-secret', SECRET).send({ clasificacion: 'caliente' });
+    assert.equal(res.status, 404, `id "${id}"`);
+  }
+  assert.equal(db.getLeads().find(l => l.id === lead.id).clasificacion, null);
 });
 
 test('si no hay secreto configurado en el servidor, la ruta está desactivada (503)', async () => {

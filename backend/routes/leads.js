@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 const rateLimit = require('express-rate-limit');
 const nodemailer = require('nodemailer');
 const db = require('../db/storage');
+const { normalizeClasificacion } = require('../lib/clasificacion');
 
 // Anti-spam: un negocio no recibe muchos leads legítimos desde la misma IP en
 // poco tiempo. Máx. 8 envíos por hora por IP.
@@ -89,7 +91,8 @@ router.post('/', leadLimiter, async (req, res) => {
       fetch(process.env.N8N_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ company, email, phone, goal, created_at: lead.created_at }),
+        // El id permite a n8n devolver la clasificación a POST /api/leads/:id/clasificacion.
+        body: JSON.stringify({ id: lead.id, company, email, phone, goal, created_at: lead.created_at }),
       }).catch(err => console.error('No se pudo notificar a n8n:', err.message));
     }
 
@@ -111,6 +114,52 @@ router.post('/', leadLimiter, async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Error al procesar el lead' });
   }
+});
+
+// ---- Respuesta de n8n: clasificación del lead (frío / tibio / caliente) ----
+// La llama el workflow de n8n, no un navegador. Se protege con un secreto
+// compartido (cabecera x-benia-secret = N8N_CALLBACK_SECRET); sin esa variable
+// en el servidor la ruta queda desactivada.
+const callbackLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiadas peticiones.' },
+});
+
+// Comparación en tiempo constante (evita adivinar el secreto midiendo tiempos).
+function secretMatches(given, expected) {
+  const a = crypto.createHash('sha256').update(String(given || '')).digest();
+  const b = crypto.createHash('sha256').update(expected).digest();
+  return crypto.timingSafeEqual(a, b);
+}
+
+function cleanText(v, max) {
+  return typeof v === 'string' ? v.trim().slice(0, max) : undefined;
+}
+
+router.post('/:id/clasificacion', callbackLimiter, (req, res) => {
+  const secret = process.env.N8N_CALLBACK_SECRET;
+  if (!secret) return res.status(503).json({ error: 'Clasificación automática no configurada' });
+  if (!secretMatches(req.get('x-benia-secret'), secret)) {
+    return res.status(401).json({ error: 'No autorizado' });
+  }
+
+  const clasificacion = normalizeClasificacion(req.body.clasificacion);
+  if (!clasificacion) return res.status(400).json({ error: 'Clasificación no válida' });
+
+  const fields = { clasificacion };
+  const servicio = cleanText(req.body.servicio, 60);
+  const necesidad = cleanText(req.body.necesidad, 600);
+  const motivo = cleanText(req.body.motivo, 300);
+  if (servicio !== undefined) fields.servicio = servicio;
+  if (necesidad !== undefined) fields.necesidad = necesidad;
+  if (motivo !== undefined) fields.motivo = motivo;
+
+  const lead = db.updateLeadClassification(req.params.id, fields);
+  if (!lead) return res.status(404).json({ error: 'Lead no encontrado' });
+  res.json({ ok: true, id: lead.id, clasificacion: lead.clasificacion });
 });
 
 module.exports = router;

@@ -3,94 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Benia Agency — Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <title>Benia Agency — CRM de leads</title>
   <style>
+    :root {
+      --bg: #0b0b0f;
+      --surface: #131318;
+      --surface-2: #191920;
+      --border: #24242d;
+      --text: #ececf1;
+      --muted: #8d8d99;
+      --brand: #14F195;
+      --frio: #3b82f6;
+      --tibio: #f59e0b;
+      --caliente: #ef4444;
+      --conversion: #a78bfa;
+      --sin: #6b7280;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; min-height: 100vh; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    button, input, select { font-family: inherit; }
+    a { color: inherit; }
 
     /* LOGIN */
-    #login-screen {
-      display: flex; align-items: center; justify-content: center; min-height: 100vh;
-    }
-    .login-card {
-      background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
-      padding: 2.5rem; width: 360px;
-    }
-    .login-card h1 { font-size: 1.4rem; margin-bottom: 0.4rem; color: #fff; }
-    .login-card p { font-size: 0.85rem; color: #888; margin-bottom: 2rem; }
-    .form-group { margin-bottom: 1.2rem; }
-    .form-group label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 0.4rem; }
-    .form-group input {
-      width: 100%; padding: 0.7rem 1rem; background: #111; border: 1px solid #333;
-      border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none;
-    }
-    .form-group input:focus { border-color: #22c55e; }
-    .btn-primary {
-      width: 100%; padding: 0.75rem; background: #22c55e; color: #000;
-      border: none; border-radius: 8px; font-weight: 700; font-size: 0.95rem;
-      cursor: pointer; transition: opacity 0.2s;
-    }
-    .btn-primary:hover { opacity: 0.85; }
-    #login-error { color: #f87171; font-size: 0.82rem; margin-top: 0.8rem; display: none; }
+    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
+    .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 380px; }
+    .login-card img { height: 34px; margin-bottom: 1.5rem; display: block; }
+    .login-card h1 { font-size: 1.35rem; margin-bottom: 0.35rem; }
+    .login-card p { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.75rem; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .form-group input { width: 100%; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 0.95rem; outline: none; }
+    .form-group input:focus { border-color: var(--brand); }
+    .btn-primary { width: 100%; padding: 0.8rem; background: var(--brand); color: #04130c; border: none; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.88; }
+    #login-error { color: #f87171; font-size: 0.84rem; margin-top: 0.9rem; display: none; }
 
-    /* DASHBOARD */
+    /* ESTRUCTURA */
     #dashboard { display: none; }
-    .topbar {
-      background: #1a1a1a; border-bottom: 1px solid #2a2a2a;
-      padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
-    }
-    .topbar h1 { font-size: 1.1rem; color: #22c55e; }
-    .topbar button {
-      background: transparent; border: 1px solid #333; color: #aaa;
-      padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
-    }
-    .topbar button:hover { border-color: #f87171; color: #f87171; }
-    .main { padding: 2rem; max-width: 1100px; margin: 0 auto; }
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
-    .stat-card {
-      background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 10px; padding: 1.2rem 1.5rem;
-    }
-    .stat-card .label { font-size: 0.78rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
-    .stat-card .value { font-size: 2rem; font-weight: 700; color: #fff; margin-top: 0.3rem; }
-    .stat-card .value.green { color: #22c55e; }
-    .stat-card .value.yellow { color: #fbbf24; }
-    .stat-card .value.red { color: #f87171; }
+    .topbar { position: sticky; top: 0; z-index: 10; background: rgba(11, 11, 15, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topbar-brand { display: flex; align-items: center; gap: 0.85rem; }
+    .topbar-brand img { height: 26px; display: block; }
+    .topbar-brand span { font-size: 0.9rem; color: var(--muted); border-left: 1px solid var(--border); padding-left: 0.85rem; }
+    .topbar-actions { display: flex; gap: 0.5rem; }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 0.45rem; background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 0.45rem 0.9rem; border-radius: 8px; cursor: pointer; font-size: 0.84rem; transition: border-color 0.2s, color 0.2s; }
+    .btn-ghost:hover { border-color: var(--brand); color: var(--brand); }
+    .btn-ghost.danger:hover { border-color: #f87171; color: #f87171; }
+    .btn-ghost svg { width: 15px; height: 15px; }
+    .main { padding: 1.75rem 1.5rem 3rem; max-width: 1240px; margin: 0 auto; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .section-title { font-size: 1.05rem; font-weight: 650; }
+    .section-note { font-size: 0.82rem; color: var(--muted); }
+    #load-error { display: none; margin-bottom: 1rem; padding: 0.8rem 1rem; border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 10px; color: #fca5a5; font-size: 0.88rem; }
 
-    .section-title { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 1rem; }
-    .filters { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-    .filter-btn {
-      padding: 0.4rem 1rem; border-radius: 20px; border: 1px solid #333;
-      background: transparent; color: #aaa; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
-    }
-    .filter-btn.active { background: #22c55e; color: #000; border-color: #22c55e; font-weight: 600; }
+    /* CONTADORES */
+    .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+    .kpi { --c: var(--brand); position: relative; overflow: hidden; padding: 1.15rem 1.2rem 1.2rem; border-top: 3px solid var(--c); }
+    .kpi-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.9rem; }
+    .kpi-icon { flex-shrink: 0; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); }
+    .kpi-icon svg { width: 22px; height: 22px; }
+    .kpi-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+    .kpi-value { font-size: 2.25rem; font-weight: 750; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+    .kpi-sub { margin-top: 0.45rem; font-size: 0.8rem; color: var(--muted); min-height: 1.1em; }
+    .kpi.total { --c: var(--brand); }
+    .kpi.frio { --c: var(--frio); }
+    .kpi.tibio { --c: var(--tibio); }
+    .kpi.caliente { --c: var(--caliente); }
+    .kpi.conversion { --c: var(--conversion); }
 
-    table { width: 100%; border-collapse: collapse; }
-    th {
-      text-align: left; padding: 0.7rem 1rem; font-size: 0.75rem;
-      color: #666; text-transform: uppercase; letter-spacing: 0.05em;
-      border-bottom: 1px solid #2a2a2a;
-    }
-    td { padding: 0.9rem 1rem; font-size: 0.88rem; border-bottom: 1px solid #1e1e1e; vertical-align: top; }
-    tr:hover td { background: #161616; }
-    .badge {
-      display: inline-block; padding: 0.25rem 0.6rem; border-radius: 20px;
-      font-size: 0.75rem; font-weight: 600;
-    }
-    .badge.pendiente { background: #1f2937; color: #fbbf24; }
-    .badge.contactado { background: #052e16; color: #22c55e; }
-    .badge.cerrado { background: #1f1f1f; color: #6b7280; }
+    /* GRÁFICA */
+    .chart-card { padding: 1.4rem 1.5rem 1.6rem; margin-bottom: 1.25rem; }
+    .chart-body { display: flex; align-items: center; justify-content: center; gap: 3.5rem; flex-wrap: wrap; padding-top: 0.5rem; }
+    .pie { width: 230px; height: 230px; flex-shrink: 0; }
+    .pie circle.slice { transition: stroke-dasharray 0.7s ease; }
+    .legend { list-style: none; min-width: 260px; flex: 0 1 380px; display: grid; gap: 0.9rem; }
+    .legend li { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 0.7rem; font-size: 0.92rem; }
+    .legend .dot { width: 11px; height: 11px; border-radius: 3px; background: var(--c); }
+    .legend .count { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .legend .pct { color: var(--muted); font-size: 0.84rem; min-width: 3.2em; text-align: right; font-variant-numeric: tabular-nums; }
+    .legend .bar { grid-column: 1 / -1; height: 5px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+    .legend .bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--c); transition: width 0.7s ease; }
+    .chart-empty { color: var(--muted); font-size: 0.92rem; padding: 2.5rem 0; }
 
-    .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-    .action-btn {
-      padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid #333;
-      background: transparent; color: #aaa; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;
-    }
-    .action-btn:hover { border-color: #22c55e; color: #22c55e; }
+    /* REGISTRO */
+    .toolbar { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .chips { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .chip { --c: var(--brand); display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.42rem 0.9rem; border-radius: 99px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 0.83rem; cursor: pointer; transition: all 0.2s; }
+    .chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+    .chip b { font-weight: 600; font-variant-numeric: tabular-nums; opacity: 0.8; }
+    .chip:hover { color: var(--text); border-color: color-mix(in srgb, var(--c) 55%, var(--border)); }
+    .chip.active { color: var(--text); border-color: var(--c); background: color-mix(in srgb, var(--c) 13%, transparent); }
+    .toolbar-right { margin-left: auto; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .input, .select { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; color: var(--text); font-size: 0.85rem; padding: 0.48rem 0.8rem; outline: none; }
+    .input { width: 210px; }
+    .input:focus, .select:focus { border-color: var(--brand); }
+    .table-card { overflow: hidden; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    th { text-align: left; padding: 0.8rem 1rem; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; border-bottom: 1px solid var(--border); background: var(--surface-2); white-space: nowrap; }
+    td { padding: 0.95rem 1rem; font-size: 0.88rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr { border-left: 3px solid transparent; }
+    tbody tr:hover td { background: var(--surface-2); }
+    .company { font-weight: 650; }
+    .lead-id { color: var(--muted); font-size: 0.76rem; margin-top: 0.15rem; }
+    .contact a { display: block; text-decoration: none; color: var(--text); }
+    .contact a:hover { color: var(--brand); }
+    .contact a + a { color: var(--muted); font-size: 0.84rem; margin-top: 0.2rem; }
+    .need { max-width: 330px; line-height: 1.45; }
+    .need strong { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+    .need span { color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .tipo-select { --c: var(--sin); appearance: none; -webkit-appearance: none; cursor: pointer; padding: 0.3rem 1.55rem 0.3rem 0.75rem; border-radius: 99px; font-size: 0.78rem; font-weight: 650; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); background-color: color-mix(in srgb, var(--c) 13%, transparent); background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 13px) 55%, calc(100% - 9px) 55%; background-size: 4px 4px; background-repeat: no-repeat; outline: none; }
+    .tipo-select option { background: var(--surface); color: var(--text); }
+    .t-caliente { --c: var(--caliente); }
+    .t-tibio { --c: var(--tibio); }
+    .t-frio { --c: var(--frio); }
+    .t-sin { --c: var(--sin); }
+    .badge { display: inline-block; padding: 0.26rem 0.65rem; border-radius: 99px; font-size: 0.76rem; font-weight: 600; white-space: nowrap; }
+    .badge.pendiente { background: rgba(245, 158, 11, 0.12); color: #fbbf24; }
+    .badge.contactado { background: rgba(59, 130, 246, 0.14); color: #93c5fd; }
+    .badge.cerrado { background: rgba(20, 241, 149, 0.13); color: var(--brand); }
+    .date { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+    .actions { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .action-btn { padding: 0.3rem 0.65rem; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 0.75rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .action-btn:hover { border-color: var(--brand); color: var(--brand); }
     .action-btn.delete:hover { border-color: #f87171; color: #f87171; }
+    .empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
 
-    .goal-text { max-width: 280px; color: #aaa; line-height: 1.4; }
-    .date-text { color: #666; font-size: 0.8rem; white-space: nowrap; }
-    .empty { text-align: center; padding: 3rem; color: #555; }
+    @media (max-width: 1100px) { .kpis { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 720px) {
+      .kpis { grid-template-columns: repeat(2, 1fr); }
+      .kpi.total { grid-column: 1 / -1; }
+      .main { padding: 1.25rem 1rem 2.5rem; }
+      .topbar { padding: 0.75rem 1rem; }
+      .topbar-brand span { display: none; }
+      .chart-body { gap: 1.75rem; }
+      .pie { width: 190px; height: 190px; }
+      .toolbar-right { margin-left: 0; width: 100%; }
+      .input { flex: 1; width: auto; }
+    }
   </style>
 </head>
 <body>
@@ -98,15 +150,16 @@
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
-    <h1>Benia Agency</h1>
-    <p>Panel de administración</p>
+    <img src="../images/logo.png" alt="Benia Agency">
+    <h1>CRM de leads</h1>
+    <p>Acceso privado al panel de Benia Agency</p>
     <form id="login-form">
       <div class="form-group">
-        <label>Usuario</label>
+        <label for="username">Usuario</label>
         <input type="text" id="username" required autocomplete="username">
       </div>
       <div class="form-group">
-        <label>Contraseña</label>
+        <label for="password">Contraseña</label>
         <input type="password" id="password" required autocomplete="current-password">
       </div>
       <button type="submit" class="btn-primary">Entrar</button>
@@ -115,59 +168,136 @@
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- PANEL -->
 <div id="dashboard">
   <div class="topbar">
-    <h1>Benia Agency — Admin</h1>
-    <button id="logout-btn">Cerrar sesión</button>
+    <div class="topbar-brand">
+      <img src="../images/logo.png" alt="Benia Agency">
+      <span>CRM de leads</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-ghost" id="refresh-btn" title="Volver a cargar los leads">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        Actualizar
+      </button>
+      <button class="btn-ghost danger" id="logout-btn">Cerrar sesión</button>
+    </div>
   </div>
+
   <div class="main">
-    <div class="stats">
-      <div class="stat-card">
-        <div class="label">Total leads</div>
-        <div class="value" id="stat-total">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Pendientes</div>
-        <div class="value yellow" id="stat-pending">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Contactados</div>
-        <div class="value green" id="stat-contacted">—</div>
-      </div>
-    </div>
+    <div id="load-error">No se han podido cargar los leads. Comprueba la conexión y pulsa «Actualizar».</div>
 
-    <div class="section-title">Leads</div>
-    <div class="filters">
-      <button class="filter-btn active" data-filter="all">Todos</button>
-      <button class="filter-btn" data-filter="pendiente">Pendientes</button>
-      <button class="filter-btn" data-filter="contactado">Contactados</button>
-      <button class="filter-btn" data-filter="cerrado">Cerrados</button>
-    </div>
+    <!-- CONTADORES -->
+    <section class="kpis" aria-label="Resumen de leads">
+      <div class="card kpi total">
+        <div class="kpi-top">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="kpi-label">Total leads</div>
+        </div>
+        <div class="kpi-value" id="kpi-total">0</div>
+        <div class="kpi-sub" id="kpi-total-sub"></div>
+      </div>
+      <div class="card kpi frio">
+        <div class="kpi-top">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg></div>
+          <div class="kpi-label">Fríos</div>
+        </div>
+        <div class="kpi-value" id="kpi-frio">0</div>
+        <div class="kpi-sub" id="kpi-frio-sub"></div>
+      </div>
+      <div class="card kpi tibio">
+        <div class="kpi-top">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg></div>
+          <div class="kpi-label">Tibios</div>
+        </div>
+        <div class="kpi-value" id="kpi-tibio">0</div>
+        <div class="kpi-sub" id="kpi-tibio-sub"></div>
+      </div>
+      <div class="card kpi caliente">
+        <div class="kpi-top">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+          <div class="kpi-label">Calientes</div>
+        </div>
+        <div class="kpi-value" id="kpi-caliente">0</div>
+        <div class="kpi-sub" id="kpi-caliente-sub"></div>
+      </div>
+      <div class="card kpi conversion">
+        <div class="kpi-top">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+          <div class="kpi-label">Conversión</div>
+        </div>
+        <div class="kpi-value" id="kpi-conversion">0 %</div>
+        <div class="kpi-sub" id="kpi-conversion-sub"></div>
+      </div>
+    </section>
 
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Empresa</th>
-          <th>Email</th>
-          <th>Teléfono</th>
-          <th>Objetivo</th>
-          <th>Estado</th>
-          <th>Fecha</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="leads-table"></tbody>
-    </table>
+    <!-- GRÁFICA -->
+    <section class="card chart-card">
+      <div class="section-head">
+        <h2 class="section-title">Leads por tipo</h2>
+        <span class="section-note" id="chart-note"></span>
+      </div>
+      <div class="chart-body" id="chart-body"></div>
+    </section>
+
+    <!-- REGISTRO -->
+    <section>
+      <div class="section-head">
+        <h2 class="section-title">Registro de leads</h2>
+        <span class="section-note" id="table-note"></span>
+      </div>
+      <div class="toolbar">
+        <div class="chips" id="tipo-chips"></div>
+        <div class="toolbar-right">
+          <select class="select" id="estado-filter" aria-label="Filtrar por estado">
+            <option value="all">Todos los estados</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="contactado">Contactados</option>
+            <option value="cerrado">Cerrados</option>
+          </select>
+          <input class="input" id="search" type="search" placeholder="Buscar empresa o email" aria-label="Buscar">
+        </div>
+      </div>
+      <div class="card table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Contacto</th>
+                <th>Tipo</th>
+                <th>Qué necesita</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="leads-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
 
 <script>
   const API = '/api/admin';
+  // Orden de mayor a menor temperatura; "sin" agrupa los leads aún no clasificados.
+  const TIPOS = {
+    caliente: { label: 'Caliente', plural: 'Calientes', color: 'var(--caliente)' },
+    tibio: { label: 'Tibio', plural: 'Tibios', color: 'var(--tibio)' },
+    frio: { label: 'Frío', plural: 'Fríos', color: 'var(--frio)' },
+    sin: { label: 'Sin clasificar', plural: 'Sin clasificar', color: 'var(--sin)' },
+  };
+  const ESTADOS = { pendiente: 'Pendiente', contactado: 'Contactado', cerrado: 'Cerrado' };
+
   let token = localStorage.getItem('benia_token');
   let allLeads = [];
-  let activeFilter = 'all';
+  let filtroTipo = 'all';
+  let filtroEstado = 'all';
+  let busqueda = '';
+
+  const $ = id => document.getElementById(id);
 
   // Escapa HTML para evitar XSS almacenado: los leads vienen del formulario
   // público y NO son de confianza. Nunca insertar sus campos sin pasar por aquí.
@@ -180,121 +310,241 @@
       .replace(/'/g, '&#39;');
   }
 
+  const tipoDe = lead => (lead.clasificacion in TIPOS && lead.clasificacion !== 'sin' ? lead.clasificacion : 'sin');
+  const pct = (n, total) => (total ? Math.round((n / total) * 100) : 0);
+
+  // ---------- sesión ----------
   if (token) showDashboard();
 
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
+  $('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
     const res = await fetch(`${API}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username: $('username').value, password: $('password').value }),
     });
-
     if (res.ok) {
-      const data = await res.json();
-      token = data.token;
+      token = (await res.json()).token;
       localStorage.setItem('benia_token', token);
-      document.getElementById('login-error').style.display = 'none';
+      $('login-error').style.display = 'none';
       showDashboard();
     } else {
-      document.getElementById('login-error').style.display = 'block';
+      const data = await res.json().catch(() => ({}));
+      $('login-error').textContent = res.status === 429 ? (data.error || 'Demasiados intentos') : 'Usuario o contraseña incorrectos';
+      $('login-error').style.display = 'block';
     }
   });
 
-  document.getElementById('logout-btn').addEventListener('click', () => {
+  function logout() {
     localStorage.removeItem('benia_token');
     token = null;
-    document.getElementById('dashboard').style.display = 'none';
-    document.getElementById('login-screen').style.display = 'flex';
-  });
-
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      renderTable();
-    });
-  });
+    $('dashboard').style.display = 'none';
+    $('login-screen').style.display = 'flex';
+  }
+  $('logout-btn').addEventListener('click', logout);
+  $('refresh-btn').addEventListener('click', loadLeads);
 
   async function showDashboard() {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
+    $('login-screen').style.display = 'none';
+    $('dashboard').style.display = 'block';
     await loadLeads();
+  }
+
+  // ---------- datos ----------
+  async function api(path, options = {}) {
+    const res = await fetch(`${API}${path}`, {
+      ...options,
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...(options.headers || {}) },
+    });
+    if (res.status === 401 || res.status === 403) { logout(); throw new Error('Sesión caducada'); }
+    return res;
   }
 
   async function loadLeads() {
-    const res = await fetch(`${API}/leads`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (res.status === 401 || res.status === 403) {
-      localStorage.removeItem('benia_token');
-      location.reload();
+    try {
+      const res = await api('/leads');
+      if (!res.ok) throw new Error('Error del servidor');
+      allLeads = await res.json();
+      $('load-error').style.display = 'none';
+    } catch (err) {
+      if (token) $('load-error').style.display = 'block';
       return;
     }
+    render();
+  }
 
-    allLeads = await res.json();
-    updateStats();
+  function render() {
+    const counts = { caliente: 0, tibio: 0, frio: 0, sin: 0 };
+    allLeads.forEach(l => counts[tipoDe(l)]++);
+    renderKpis(counts);
+    renderChart(counts);
+    renderChips(counts);
     renderTable();
   }
 
-  function updateStats() {
-    document.getElementById('stat-total').textContent = allLeads.length;
-    document.getElementById('stat-pending').textContent = allLeads.filter(l => l.status === 'pendiente').length;
-    document.getElementById('stat-contacted').textContent = allLeads.filter(l => l.status === 'contactado').length;
+  // ---------- contadores ----------
+  // Cuenta desde el valor que ya se ve hasta el nuevo, frenando al final.
+  function animateNumber(el, to, suffix = '') {
+    const from = Number(el.dataset.value || 0);
+    el.dataset.value = to;
+    if (from === to) { el.textContent = to + suffix; return; }
+    const start = performance.now();
+    const duration = 900;
+    const step = now => {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(from + (to - from) * eased) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
   }
 
-  function renderTable() {
-    const filtered = activeFilter === 'all' ? allLeads : allLeads.filter(l => l.status === activeFilter);
-    const tbody = document.getElementById('leads-table');
+  function renderKpis(counts) {
+    const total = allLeads.length;
+    const cerrados = allLeads.filter(l => l.status === 'cerrado').length;
+    const pendientes = allLeads.filter(l => l.status === 'pendiente').length;
 
-    if (!filtered.length) {
-      tbody.innerHTML = '<tr><td colspan="8" class="empty">No hay leads en esta categoría</td></tr>';
+    animateNumber($('kpi-total'), total);
+    $('kpi-total-sub').textContent = total ? `${pendientes} pendiente${pendientes === 1 ? '' : 's'} de contactar` : 'Aún no ha entrado ninguno';
+    for (const t of ['frio', 'tibio', 'caliente']) {
+      animateNumber($(`kpi-${t}`), counts[t]);
+      $(`kpi-${t}-sub`).textContent = total ? `${pct(counts[t], total)} % del total` : '';
+    }
+    animateNumber($('kpi-conversion'), pct(cerrados, total), ' %');
+    $('kpi-conversion-sub').textContent = total ? `${cerrados} de ${total} cerrado${cerrados === 1 ? '' : 's'} como cliente` : '';
+  }
+
+  // ---------- gráfica de tarta ----------
+  function renderChart(counts) {
+    const total = allLeads.length;
+    const body = $('chart-body');
+    $('chart-note').textContent = total ? `${total} lead${total === 1 ? '' : 's'} en total` : '';
+    if (!total) { body.innerHTML = '<p class="chart-empty">La gráfica aparecerá cuando entre el primer lead.</p>'; return; }
+
+    // Tarta dibujada con el trazo de un círculo: radio 8 y grosor 16 rellenan el disco entero.
+    const R = 8, C = 2 * Math.PI * R, CENTER = 17;
+    const slices = Object.keys(TIPOS).filter(t => counts[t] > 0);
+    let acc = 0;
+    let circles = '';
+    let lines = '';
+    for (const t of slices) {
+      const frac = counts[t] / total;
+      const len = frac * C;
+      circles += `<circle class="slice" cx="${CENTER}" cy="${CENTER}" r="${R}" fill="none" stroke="${TIPOS[t].color}" stroke-width="${R * 2}"
+        stroke-dasharray="0 ${C}" data-dash="${len} ${C - len}" stroke-dashoffset="${-acc * C}"><title>${TIPOS[t].plural}: ${counts[t]} (${pct(counts[t], total)} %)</title></circle>`;
+      if (slices.length > 1) {
+        const a = acc * 2 * Math.PI;
+        lines += `<line x1="${CENTER}" y1="${CENTER}" x2="${CENTER + 16 * Math.cos(a)}" y2="${CENTER + 16 * Math.sin(a)}" stroke="var(--surface)" stroke-width="0.45"/>`;
+      }
+      acc += frac;
+    }
+    const legend = Object.keys(TIPOS).filter(t => t !== 'sin' || counts.sin > 0).map(t => `
+      <li style="--c:${TIPOS[t].color}">
+        <span class="dot"></span><span>${TIPOS[t].plural}</span>
+        <span class="count">${counts[t]}</span><span class="pct">${pct(counts[t], total)} %</span>
+        <span class="bar"><i data-w="${pct(counts[t], total)}"></i></span>
+      </li>`).join('');
+
+    body.innerHTML = `
+      <svg class="pie" viewBox="0 0 34 34" role="img" aria-label="Reparto de leads por tipo">
+        <g transform="rotate(-90 ${CENTER} ${CENTER})">${circles}${lines}</g>
+      </svg>
+      <ul class="legend">${legend}</ul>`;
+
+    // Se pinta en el siguiente fotograma para que las porciones y barras crezcan con transición.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      body.querySelectorAll('circle.slice').forEach(c => c.setAttribute('stroke-dasharray', c.dataset.dash));
+      body.querySelectorAll('.bar i').forEach(i => { i.style.width = i.dataset.w + '%'; });
+    }));
+  }
+
+  // ---------- filtros ----------
+  function renderChips(counts) {
+    const chips = [{ key: 'all', label: 'Todos', n: allLeads.length, color: 'var(--brand)' }]
+      .concat(Object.keys(TIPOS).map(t => ({ key: t, label: TIPOS[t].plural, n: counts[t], color: TIPOS[t].color })));
+    $('tipo-chips').innerHTML = chips.map(c => `
+      <button class="chip${filtroTipo === c.key ? ' active' : ''}" data-tipo="${c.key}" style="--c:${c.color}">
+        <i></i>${c.label}<b>${c.n}</b>
+      </button>`).join('');
+  }
+
+  $('tipo-chips').addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    filtroTipo = chip.dataset.tipo;
+    document.querySelectorAll('#tipo-chips .chip').forEach(c => c.classList.toggle('active', c === chip));
+    renderTable();
+  });
+  $('estado-filter').addEventListener('change', e => { filtroEstado = e.target.value; renderTable(); });
+  $('search').addEventListener('input', e => { busqueda = e.target.value.trim().toLowerCase(); renderTable(); });
+
+  // ---------- registro ----------
+  function renderTable() {
+    const rows = allLeads.filter(l =>
+      (filtroTipo === 'all' || tipoDe(l) === filtroTipo) &&
+      (filtroEstado === 'all' || l.status === filtroEstado) &&
+      (!busqueda || `${l.company} ${l.email}`.toLowerCase().includes(busqueda)));
+
+    $('table-note').textContent = rows.length === allLeads.length
+      ? `${allLeads.length} lead${allLeads.length === 1 ? '' : 's'}`
+      : `${rows.length} de ${allLeads.length}`;
+
+    const tbody = $('leads-table');
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="7" class="empty">${allLeads.length ? 'Ningún lead coincide con los filtros' : 'Todavía no hay leads'}</td></tr>`;
       return;
     }
 
-    tbody.innerHTML = filtered.map(lead => `
-      <tr>
-        <td>${esc(lead.id)}</td>
-        <td><strong>${esc(lead.company)}</strong></td>
-        <td><a href="mailto:${encodeURIComponent(lead.email)}" style="color:#22c55e">${esc(lead.email)}</a></td>
-        <td>${lead.phone ? `<a href="tel:${esc(lead.phone)}" style="color:#22c55e">${esc(lead.phone)}</a>` : '<span style="color:#666">—</span>'}</td>
-        <td><div class="goal-text">${esc(lead.goal)}</div></td>
-        <td><span class="badge ${esc(lead.status)}">${esc(lead.status)}</span></td>
-        <td><div class="date-text">${new Date(lead.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' })}</div></td>
+    tbody.innerHTML = rows.map(lead => {
+      const id = Number(lead.id);
+      const tipo = tipoDe(lead);
+      const estado = lead.status in ESTADOS ? lead.status : 'pendiente';
+      const fecha = new Date(lead.created_at);
+      const options = Object.keys(TIPOS).map(t =>
+        `<option value="${t}"${t === tipo ? ' selected' : ''}>${TIPOS[t].label}</option>`).join('');
+      return `
+      <tr style="border-left-color:${TIPOS[tipo].color}">
+        <td><div class="company">${esc(lead.company)}</div><div class="lead-id">#${id}</div></td>
+        <td class="contact">
+          <a href="mailto:${encodeURIComponent(lead.email)}">${esc(lead.email)}</a>
+          ${lead.phone ? `<a href="tel:${esc(lead.phone)}">${esc(lead.phone)}</a>` : ''}
+        </td>
+        <td><select class="tipo-select t-${tipo}" data-id="${id}" aria-label="Tipo de lead">${options}</select></td>
+        <td><div class="need" title="${esc(lead.goal)}">${lead.necesidad ? `<strong>${esc(lead.necesidad)}</strong>` : ''}<span>${esc(lead.goal)}</span></div></td>
+        <td><span class="badge ${estado}">${ESTADOS[estado]}</span></td>
+        <td><div class="date">${fecha.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}<br>${fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</div></td>
         <td>
           <div class="actions">
-            ${lead.status !== 'contactado' ? `<button class="action-btn" onclick="changeStatus(${lead.id},'contactado')">Contactado</button>` : ''}
-            ${lead.status !== 'cerrado' ? `<button class="action-btn" onclick="changeStatus(${lead.id},'cerrado')">Cerrar</button>` : ''}
-            ${lead.status !== 'pendiente' ? `<button class="action-btn" onclick="changeStatus(${lead.id},'pendiente')">Reabrir</button>` : ''}
-            <button class="action-btn delete" onclick="deleteLead(${lead.id})">Eliminar</button>
+            ${estado !== 'contactado' ? `<button class="action-btn" data-action="contactado" data-id="${id}">Contactado</button>` : ''}
+            ${estado !== 'cerrado' ? `<button class="action-btn" data-action="cerrado" data-id="${id}">Cerrar venta</button>` : ''}
+            ${estado !== 'pendiente' ? `<button class="action-btn" data-action="pendiente" data-id="${id}">Reabrir</button>` : ''}
+            <button class="action-btn delete" data-action="delete" data-id="${id}">Eliminar</button>
           </div>
         </td>
-      </tr>
-    `).join('');
+      </tr>`;
+    }).join('');
   }
 
-  async function changeStatus(id, status) {
-    await fetch(`${API}/leads/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ status }),
-    });
+  $('leads-table').addEventListener('click', async e => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const id = Number(btn.dataset.id);
+    if (btn.dataset.action === 'delete') {
+      if (!confirm('¿Eliminar este lead? No se puede deshacer.')) return;
+      await api(`/leads/${id}`, { method: 'DELETE' });
+    } else {
+      await api(`/leads/${id}`, { method: 'PATCH', body: JSON.stringify({ status: btn.dataset.action }) });
+    }
     await loadLeads();
-  }
+  });
 
-  async function deleteLead(id) {
-    if (!confirm('¿Eliminar este lead?')) return;
-    await fetch(`${API}/leads/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  $('leads-table').addEventListener('change', async e => {
+    const sel = e.target.closest('.tipo-select');
+    if (!sel) return;
+    const clasificacion = sel.value === 'sin' ? null : sel.value;
+    await api(`/leads/${Number(sel.dataset.id)}`, { method: 'PATCH', body: JSON.stringify({ clasificacion }) });
     await loadLeads();
-  }
+  });
 </script>
 </body>
 </html>

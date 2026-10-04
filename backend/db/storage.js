@@ -32,12 +32,29 @@ const db = {
       id: data.nextLeadId++,
       company, email, phone, goal,
       status: 'pendiente',
+      // Temperatura del lead (frio | tibio | caliente). Nace sin clasificar; la
+      // pone n8n tras analizarlo, o el admin a mano desde el panel.
+      clasificacion: null,
       created_at: now,
       // Solo se llega aquí tras validar la casilla de privacidad en la ruta;
       // guardar cuándo se aceptó sirve como prueba del consentimiento (RGPD art. 7.1).
       privacy_accepted_at: now,
     };
     data.leads.push(lead);
+    save(data);
+    return lead;
+  },
+
+  // Actualiza solo los campos que llegan (clasificacion, servicio, necesidad,
+  // motivo). Devuelve el lead actualizado, o null si no existe.
+  updateLeadClassification(id, fields) {
+    const data = load();
+    const lead = data.leads.find(l => l.id === parseInt(id));
+    if (!lead) return null;
+    for (const key of ['clasificacion', 'servicio', 'necesidad', 'motivo']) {
+      if (key in fields) lead[key] = fields[key];
+    }
+    lead.classified_at = lead.clasificacion ? new Date().toISOString() : null;
     save(data);
     return lead;
   },

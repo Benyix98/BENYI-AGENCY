@@ -30,8 +30,10 @@ export function initCarousel(root) {
             dot.classList.toggle('is-active', i === target);
             dot.setAttribute('aria-current', i === target ? 'true' : 'false');
         });
+        const changed = target !== index;
         index = target;
         if (announce && status) status.textContent = `Diapositiva ${index + 1} de ${total}`;
+        if (changed) root.dispatchEvent(new CustomEvent('carousel:change', { bubbles: true }));
     };
 
     root.querySelector('.carousel-prev')?.addEventListener('click', () => go(index - 1));

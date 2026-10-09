@@ -54,11 +54,19 @@ export function initVideos() {
     const videos = document.querySelectorAll('video[data-autoplay]');
     if (!videos.length || !('IntersectionObserver' in window)) return;
     if (reducedMotion()) { videos.forEach((v) => { v.controls = true; }); return; }
+    // El observador no distingue una diapositiva oculta del carrusel (ocupa el mismo hueco), así que se comprueba aparte.
+    const inView = new WeakSet();
+    const sync = (v) => {
+        if (inView.has(v) && !v.closest('.slide[inert]')) v.play().catch(() => {});
+        else v.pause();
+    };
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-            if (entry.isIntersecting) entry.target.play().catch(() => {});
-            else entry.target.pause();
+            if (entry.isIntersecting) inView.add(entry.target);
+            else inView.delete(entry.target);
+            sync(entry.target);
         });
     }, { threshold: 0.4 });
     videos.forEach((v) => observer.observe(v));
+    document.addEventListener('carousel:change', () => videos.forEach(sync));
 }

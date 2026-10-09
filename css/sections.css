@@ -21,16 +21,27 @@
 .menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* El encabezado lleva backdrop-filter, que ancla a sí mismo a cualquier hijo con position: fixed (el panel se quedaba
+   en una franja de 48 px) y le impide desenfocar la página. Por eso va en absolute, con su propia altura y fondo opaco,
+   y entra deslizándose desde la derecha. */
 .mobile-menu {
-    position: fixed; inset: var(--header-h) 0 0 0; display: flex; flex-direction: column; gap: 4px;
-    padding: 24px; overflow-y: auto; background: rgba(3, 3, 3, .97);
-    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); animation: bubble-in .3s var(--ease);
+    position: absolute; top: var(--header-h); left: 0; right: 0;
+    height: calc(100vh - var(--header-h)); height: calc(100dvh - var(--header-h));
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 24px; overflow-y: auto; background: var(--bg);
+    transform: translateX(100%); visibility: hidden;
+    transition: transform .35s var(--ease), visibility 0s .35s;
 }
+.mobile-menu.is-open { transform: none; visibility: visible; transition-delay: 0s; }
 .mobile-menu[hidden] { display: none; }
 .mobile-menu a:not(.btn) { padding: 18px 4px; border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-2); }
-.mobile-menu .btn { margin-top: 28px; }
+.mobile-menu .btn { flex: none; margin-top: 28px; }
+body.no-scroll .assistant { visibility: hidden; } /* con el menú abierto, el botón del chat taparía el de Contacto en pantallas pequeñas */
 @media (max-width: 1023px) { .main-nav { display: none; } .menu-toggle { display: flex; } }
+@media (min-width: 1024px) { .mobile-menu { display: none; } }
 @media (max-width: 479px) { .header-actions .btn { display: none; } }
+/* Pantallas bajas: se aprieta el espaciado para que los ocho enlaces quepan sin desplazar */
+@media (max-height: 699px) { .mobile-menu { padding-block: 12px; } .mobile-menu a:not(.btn) { padding-block: 12px; } .mobile-menu .btn { margin-top: 14px; } }
 
 /* Hero */
 .hero { position: relative; display: flex; align-items: center; min-height: min(100vh, 880px); padding: calc(var(--header-h) + 56px) 0 80px; overflow: hidden; scroll-margin-top: 0; }

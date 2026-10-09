@@ -9,9 +9,11 @@ export function initHeader() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
+    // El HTML lo trae con hidden para quien no tenga JS; aquí se oculta con CSS para poder animar la entrada y la salida.
+    menu.hidden = false;
     const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
     const setOpen = (open) => {
-        menu.hidden = !open;
+        menu.classList.toggle('is-open', open);
         toggle.setAttribute('aria-expanded', String(open));
         header.classList.toggle('menu-open', open);
         document.body.classList.toggle('no-scroll', open);

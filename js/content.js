@@ -10,7 +10,7 @@ export const heroChat = [
     { from: 'user', text: '¿Qué servicios ofrecéis?' },
     { from: 'bot', text: 'Automatizaciones de IA, Landings Inteligentes, Agentes de IA Personalizados y Mentorías Especializadas.' },
     { from: 'user', text: 'Quiero agendar una llamada' },
-    { from: 'bot', text: 'Diagnóstico Gratuito: 30 minutos de forma totalmente gratuita. ✅' },
+    { from: 'bot', text: 'Diagnóstico Gratuito: 20 minutos de forma totalmente gratuita. ✅' },
 ];
 
 // Detalle de cada servicio.

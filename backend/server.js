@@ -9,8 +9,6 @@ const db = require('./db/storage');
 const leadsRouter = require('./routes/leads');
 const chatRouter = require('./routes/chat');
 const adminRouter = require('./routes/admin');
-const checkoutRouter = require('./routes/checkout');
-const stripeWebhookRouter = require('./routes/stripe-webhook');
 
 // Asegura el usuario admin en cada arranque a partir de las variables de
 // entorno. Idempotente: crea el admin si no existe y actualiza su
@@ -39,10 +37,6 @@ app.use(helmet({ contentSecurityPolicy: false }));
 
 app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
 
-// El webhook de Stripe necesita el cuerpo crudo (Buffer) para verificar la
-// firma, así que se monta antes del express.json() global.
-app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }), stripeWebhookRouter);
-
 app.use(express.json());
 
 // El servidor sirve el frontend Y el backend viven en el mismo árbol (/app).
@@ -61,7 +55,6 @@ app.use(express.static(path.join(__dirname, '..')));
 app.use('/api/leads', leadsRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/admin', adminRouter);
-app.use('/api/checkout', checkoutRouter);
 
 // Fallback — sirve index.html para cualquier ruta no encontrada
 app.get('*', (req, res) => {

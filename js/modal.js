@@ -23,11 +23,10 @@ export function openCalendly() {
     else window.open(url, '_blank', 'noopener');
 }
 
-function render(content, serviceId) {
+function render(content) {
     return `
         <div class="modal-hero">
             <h2 id="modal-title">${esc(content.title)}</h2>
-            <div class="modal-price">Inversión: ${esc(content.price)}</div>
         </div>
         <div class="modal-grid">
             <div>
@@ -51,8 +50,7 @@ function render(content, serviceId) {
         <div class="modal-footer">
             <p>${esc(content.cta)}</p>
             <div class="modal-actions">
-                <a href="#" class="btn ${content.checkout === false ? 'btn-primary' : 'btn-secondary'} btn-lg" data-calendly>Diagnóstico Gratuito</a>
-                ${content.checkout === false ? '' : `<a href="checkout.html?service=${encodeURIComponent(serviceId)}" class="btn btn-primary btn-lg">Contratar Ahora (Pago Seguro)</a>`}
+                <a href="#" class="btn btn-primary btn-lg" data-calendly>Diagnóstico Gratuito</a>
             </div>
         </div>`;
 }
@@ -74,7 +72,7 @@ export function initModal() {
         if (opener) {
             const id = opener.dataset.openService;
             if (!services[id]) return;
-            body.innerHTML = render(services[id], id);
+            body.innerHTML = render(services[id]);
             dialog.showModal();
             dialog.scrollTop = 0;
             return;

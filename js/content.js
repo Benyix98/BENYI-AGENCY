@@ -17,7 +17,6 @@ export const heroChat = [
 export const services = {
     'automatizacion': {
         title: 'Automatizaciones de IA',
-        price: '350€ Base (variable por tokens) + 30€/mes Mantenimiento',
         achievements: [
             'Reducción de errores operativos en un 95%.',
             'Disponibilidad total 24/7 sin supervisión humana.',
@@ -31,7 +30,6 @@ export const services = {
     },
     'landings': {
         title: 'Landings Inteligentes',
-        price: '200€ + 20€/mes Mantenimiento',
         achievements: [
             'Tasa de captura de leads duplicada mediante IA.',
             'Cualificación automática de prospectos en tiempo real.',
@@ -45,7 +43,6 @@ export const services = {
     },
     'agentes-ia': {
         title: 'Agentes de IA Personalizados',
-        price: 'A medida, con presupuesto cerrado tras el diagnóstico gratuito',
         achievements: [
             'Atención a tus clientes 24/7 por chat web, WhatsApp o teléfono.',
             'Respuestas basadas en la información real de tu negocio.',
@@ -56,12 +53,9 @@ export const services = {
             capital: 'Ningún contacto sin respuesta fuera de horario',
         },
         cta: 'Diseñemos el agente que tu negocio necesita.',
-        // Sin precio fijo: no se contrata desde la pasarela, solo se pide el diagnóstico.
-        checkout: false,
     },
     'mentorias': {
         title: 'Mentorías Especializadas',
-        price: 'Pack 1h: 65€ | Pack 2h: 125€ | Pack 3h: 170€',
         achievements: [
             'Autonomía total del equipo interno en herramientas IA.',
             'Implementación de cultura de automatización escalable.',

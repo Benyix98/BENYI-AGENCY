@@ -4,17 +4,11 @@ import { services } from './content.js';
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /**
- * URL de Calendly según la rotación semanal de turnos.
- * Semana del 9 de marzo de 2026 = tardes.
+ * URL del único evento activo en Calendly. El horario de cada semana
+ * (turno de mañanas o de tardes) se configura en el propio evento.
  */
 export function getCalendlyUrl() {
-    const baseDate = new Date('2026-03-09T00:00:00Z');
-    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-    const weeksElapsed = Math.floor((new Date() - baseDate) / msPerWeek);
-    const isMornings = Math.abs(weeksElapsed) % 2 !== 0;
-    return isMornings
-        ? 'https://calendly.com/livefordea4/30min' // Mañanas
-        : 'https://calendly.com/livefordea4/new-meeting'; // Tardes
+    return 'https://calendly.com/livefordea4/new-meeting';
 }
 
 export function openCalendly() {

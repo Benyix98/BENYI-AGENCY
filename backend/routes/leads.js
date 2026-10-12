@@ -24,6 +24,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Buzón que recibe el aviso de cada lead nuevo. La cuenta que lo envía
+// (EMAIL_USER) puede ser otra.
+const LEADS_EMAIL_TO = process.env.LEADS_EMAIL_TO || 'beniaagency98@gmail.com';
+
 // Escapa HTML para el correo de aviso (los campos vienen del formulario
 // público y no son de confianza).
 function esc(v) {
@@ -98,7 +102,7 @@ router.post('/', leadLimiter, async (req, res) => {
 
     transporter.sendMail({
       from: `"Benia Agency" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
+      to: LEADS_EMAIL_TO,
       subject: `Nuevo lead: ${esc(company)}`,
       html: `
         <h2>Nuevo lead recibido</h2>

@@ -387,8 +387,9 @@
         <!-- TESTIMONIOS -->
         <section class="section section-tight" id="testimonios">
             <div class="container">
-                <div class="testimonials-grid">
-                    <figure class="card testimonial" data-reveal="scale">
+                <div class="t-carousel" id="testimonials-carousel" role="region" aria-roledescription="carousel" aria-label="Opiniones de clientes" data-reveal="up">
+                    <div class="t-viewport">
+                    <figure class="card testimonial is-active" role="group" aria-roledescription="slide" aria-label="1 de 2">
                         <div class="quote-mark" aria-hidden="true">“</div>
                         <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
                         <blockquote>Totalmente un profesional en su trabajo. Me enseñó varias ideas muy útiles.</blockquote>
@@ -397,7 +398,7 @@
                             <span class="author-title">Cliente de Benia Agency</span>
                         </figcaption>
                     </figure>
-                    <figure class="card testimonial" data-reveal="scale" data-delay="100">
+                    <figure class="card testimonial" role="group" aria-roledescription="slide" aria-label="2 de 2">
                         <div class="quote-mark" aria-hidden="true">“</div>
                         <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
                         <blockquote>Un servicio de 10, muy profesional y atento a los detalles. Mejoró mi flujo de clientes en hasta un 25 %. ¡Gracias por el servicio!</blockquote>
@@ -406,6 +407,7 @@
                             <span class="author-title">Cliente de Benia Agency</span>
                         </figcaption>
                     </figure>
+                    </div>
                     </div>
             </div>
         </section>

@@ -224,7 +224,15 @@ body.no-scroll .assistant { visibility: hidden; } /* con el menú abierto, el bo
 .testimonial blockquote { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.2rem, 1.7vw, 1.45rem); line-height: 1.35; }
 .testimonial figcaption { display: flex; flex-direction: column; gap: 2px; margin-top: auto; padding-top: 22px; }
 @media (max-width: 899px) { .testimonials-grid { grid-template-columns: minmax(0, 1fr); } }
-.testimonials-grid:has(> .testimonial:only-child) { grid-template-columns: minmax(0, 640px); justify-content: center; }
+.t-carousel { max-width: 720px; margin: 0 auto; }
+.t-viewport { display: grid; gap: 20px; }
+.js .t-viewport { gap: 0; overflow: hidden; padding: 2px; }
+.js .t-viewport > .testimonial { grid-area: 1 / 1; opacity: 0; visibility: hidden; transform: translateX(100%); transition: transform .7s var(--ease), opacity .7s var(--ease), visibility 0s .7s; }
+.js .t-viewport > .testimonial.is-active { opacity: 1; visibility: visible; transform: none; transition: transform .7s var(--ease), opacity .7s var(--ease), visibility 0s; }
+.js .t-viewport > .testimonial.is-leaving { opacity: 0; visibility: visible; transform: translateX(-100%); transition: transform .7s var(--ease), opacity .7s var(--ease), visibility 0s .7s; }
+.js .t-viewport > .testimonial.is-ready { transition: none; }
+.t-carousel .carousel-dots { margin-top: 24px; }
+@media (prefers-reduced-motion: reduce) { .js .t-viewport > .testimonial { transition: none; } }
 .author-name { font-weight: 700; letter-spacing: .08em; color: var(--primary); }
 .author-title { font-size: 13px; color: var(--muted-fg); }
 

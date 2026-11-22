@@ -111,6 +111,7 @@ body.no-scroll .assistant { visibility: hidden; } /* con el menú abierto, el bo
 .compare-arrow { font-size: 22px; color: var(--primary); transition: transform .7s var(--ease) .8s; }
 .problem-stat { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-top: 24px; }
 .problem-value { font-family: var(--font-display); font-size: clamp(2.75rem, 7vw, 4.5rem); font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; color: var(--primary); }
+.problem-value--text { font-size: clamp(1.9rem, 4.6vw, 3rem); }
 .problem-stat-label { color: var(--muted-fg); }
 .problem-bar { position: relative; overflow: hidden; height: 2px; margin-top: 24px; border-radius: 2px; background: var(--border); }
 .problem-bar::after { content: ""; position: absolute; inset: 0; background: var(--gradient-primary); transform-origin: left; transition: transform 1.6s var(--ease) .5s; }
@@ -223,6 +224,7 @@ body.no-scroll .assistant { visibility: hidden; } /* con el menú abierto, el bo
 .testimonial blockquote { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.2rem, 1.7vw, 1.45rem); line-height: 1.35; }
 .testimonial figcaption { display: flex; flex-direction: column; gap: 2px; margin-top: auto; padding-top: 22px; }
 @media (max-width: 899px) { .testimonials-grid { grid-template-columns: minmax(0, 1fr); } }
+.testimonials-grid:has(> .testimonial:only-child) { grid-template-columns: minmax(0, 640px); justify-content: center; }
 .author-name { font-weight: 700; letter-spacing: .08em; color: var(--primary); }
 .author-title { font-size: 13px; color: var(--muted-fg); }
 

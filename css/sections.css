@@ -49,6 +49,7 @@ body.no-scroll .assistant { visibility: hidden; } /* con el menú abierto, el bo
 .hero-copy .pill { margin-bottom: 24px; }
 .hero h1 { font-size: clamp(2.6rem, 5.2vw, 4.5rem); } /* titular largo: un punto menos que el h1 base */
 .hero h1 .accent { display: block; }
+.hero h1 .h1-loc { display: block; margin-top: .4em; font-size: .46em; font-weight: 600; line-height: 1.2; letter-spacing: 0; opacity: .85; }
 .lead { margin-top: 24px; max-width: 580px; font-size: 1.125rem; color: var(--fg-2); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
 .hero-visual { position: relative; width: 100%; max-width: 480px; justify-self: end; }
